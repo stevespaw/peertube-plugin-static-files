@@ -1,0 +1,18 @@
+{
+  "Static Files Manager": "Statische Dateien Verwalter",
+  "Upload Files": "Dateien hochladen",
+  "Manage Files": "Dateien verwalten",
+  "File uploaded successfully": "Datei erfolgreich hochgeladen",
+  "Error uploading file": "Fehler beim Hochladen der Datei",
+  "File deleted successfully": "Datei erfolgreich gelöscht",
+  "Error deleting file": "Fehler beim Löschen der Datei",
+  "Images": "Bilder",
+  "Documents": "Dokumente",
+  "File Name": "Dateiname",
+  "File Size": "Dateigröße",
+  "Upload Date": "Upload-Datum",
+  "Actions": "Aktionen",
+  "Delete": "Löschen",
+  "Copy Link": "Link kopieren",
+  "Drag and drop files here or click to select": "Dateien hier hineinziehen oder klicken zum Auswählen"
+}

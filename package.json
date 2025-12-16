@@ -1,0 +1,56 @@
+{
+  "name": "peertube-plugin-static-files",
+  "description": "PeerTube Plugin zum Hochladen und Verwalten statischer Dateien mit Admin-Statistiken",
+  "version": "1.6.9",
+  "author": "yarkolife",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yarkolife/peertube-plugin-static-files.git"
+  },
+  "license": "AGPL-3.0",
+  "bugs": "https://github.com/yarkolife/peertube-plugin-static-files/issues",
+  "clientScripts": [
+    {
+      "script": "dist/client-plugin.js",
+      "scopes": [
+        "common"
+      ]
+    }
+  ],
+  "css": [
+    "assets/style.css",
+    "assets/stats-dashboard.css"
+  ],
+  "peertubeUpdatePolicy": "automatic",
+  "engine": {
+    "peertube": ">=5.2.0"
+  },
+  "main": "./main.js",
+  "homepage": "https://github.com/yarkolife/peertube-plugin-static-files",
+  "keywords": [
+    "peertube",
+    "plugin",
+    "static-files",
+    "file-upload",
+    "admin-tools"
+  ],
+  "library": "./main.js",
+  "staticDirs": {
+    "public": "public",
+    "stats": "assets"
+  },
+  "translations": {
+    "de": "./translations/de.json"
+  },
+  "scripts": {
+    "build": "node ./scripts/build.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.17.11"
+  },
+  "dependencies": {
+    "multer": "^1.4.5-lts.1",
+    "mime-types": "^2.1.35",
+    "moment": "^2.29.4"
+  }
+}
