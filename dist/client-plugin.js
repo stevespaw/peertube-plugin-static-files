@@ -3,20 +3,20 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
 
   const { notifier } = peertubeHelpers
 
-  // ИНТЕГРАЦИЯ В ЛЕВОЕ МЕНЮ ЧЕРЕЗ ХУК PEERTUBE
+  // INTEGRATION INTO THE LEFT MENU VIA A PEERTUBE HOOK
   registerHook({
     target: 'filter:left-menu.links.create.result',
     handler: async (defaultLinks) => {
       console.log('Static Files: Processing menu links via hook...')
 
       try {
-        // Проверяем авторизацию
+        // Checking authorization
         if (!peertubeHelpers.isLoggedIn()) {
           console.log('Static Files: User not logged in, returning default links')
           return defaultLinks
         }
 
-        // Проверяем доступ к плагину
+        // Checking access to the plugin.
         const accessData = await checkStaticFilesAccess()
         if (!accessData.hasAccess) {
           console.log('Static Files: No access to plugin, returning default links')
@@ -25,41 +25,41 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
 
         console.log('Static Files: Adding menu section for user:', accessData.user.username)
 
-        // Создаем секцию Static Files
+        // Creating a section Static Files
         const staticFilesSection = {
           key: 'static-files',
           title: 'Static Files',
           links: []
         }
 
-        // Добавляем ссылку на загрузку файлов (для всех с доступом)
+        // We are adding a link to download the files (for everyone with access).
         if (accessData.hasAccess) {
           staticFilesSection.links.push({
             icon: 'upload',
-            label: 'Datei-Upload',
+            label: 'Data-Upload',
             path: `/p/${accessData.uploadPath}`,
             isPrimaryButton: false
           })
         }
 
-        // Добавляем ссылки для админов
+        // Adding links for administrators.
         if (accessData.isAdmin) {
           staticFilesSection.links.push({
-            icon: 'cog', // Используем 'cog' для админки
-            label: 'Datei-Verwaltung',
+            icon: 'cog', // We use 'cog' for the admin panel.
+            label: 'File management',
             path: '/p/files/admin',
             isPrimaryButton: false
           })
 
           staticFilesSection.links.push({
             icon: 'stats',
-            label: 'Admin Statistiken',
+            label: 'Admin Statistics',
             path: '/p/admin/stats',
             isPrimaryButton: false
           })
         }
 
-        // Добавляем нашу секцию к существующим ссылкам
+        // We are adding our section to the existing links.
         const updatedLinks = [
           ...defaultLinks,
           staticFilesSection
@@ -75,7 +75,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     }
   })
 
-  // ФУНКЦИЯ ПРОВЕРКИ ДОСТУПА (упрощенная для хука)
+  // ACCESS CHECK FUNCTION (simplified for the hook)
   async function checkStaticFilesAccess() {
     try {
       const authHeader = peertubeHelpers.getAuthHeader()
@@ -101,10 +101,10 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     return { hasAccess: false, isAdmin: false }
   }
 
-  // Глобальные утилиты для работы с файлами
+  // Global utilities for working with files
   window.StaticFilesPlugin = {
 
-    // Загрузка файла
+    // Downloading the file
     async uploadFile(file) {
       const formData = new FormData()
       formData.append('file', file)
@@ -120,18 +120,18 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         const result = await response.json()
 
         if (result.success) {
-          notifier.success('Datei erfolgreich hochgeladen')
+          notifier.success('File uploaded successfully')
           return result.file
         } else {
-          throw new Error(result.error || 'Unbekannter Fehler')
+          throw new Error(result.error || 'Unknown error')
         }
       } catch (error) {
-        notifier.error('Fehler beim Hochladen: ' + error.message)
+        notifier.error('Error during upload: ' + error.message)
         throw error
       }
     },
 
-    // Все Dateien abrufen
+    // Retrieve all files
     async getFiles() {
       try {
         const authHeader = peertubeHelpers.getAuthHeader()
@@ -142,7 +142,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         const result = await response.json()
         return result.files || []
       } catch (error) {
-        notifier.error('Fehler beim Laden der Dateien: ' + error.message)
+        notifier.error('Error loading the files: ' + error.message)
         return []
       }
     },
@@ -159,18 +159,18 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         const result = await response.json()
 
         if (result.success) {
-          notifier.success('Datei erfolgreich gelöscht')
+          notifier.success('File successfully deleted')
           return true
         } else {
-          throw new Error(result.error || 'Unbekannter Fehler')
+          throw new Error(result.error || 'Unknown error')
         }
       } catch (error) {
-        notifier.error('Fehler beim Löschen: ' + error.message)
+        notifier.error('Error during deletion: ' + error.message)
         throw error
       }
     },
 
-    // Hilfsfunktionen
+    // Help functions
     formatFileSize(bytes) {
       if (bytes === 0) return '0 Bytes'
       const k = 1024
@@ -193,16 +193,16 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     async copyToClipboard(text) {
       try {
         await navigator.clipboard.writeText(text)
-        notifier.success('Link in Zwischenablage kopiert')
+        notifier.success('Link copied to clipboard.')
       } catch (error) {
-        // Fallback für ältere Browser
+        // Fallback for older browsers
         const textArea = document.createElement('textarea')
         textArea.value = text
         document.body.appendChild(textArea)
         textArea.select()
         document.execCommand('copy')
         document.body.removeChild(textArea)
-        notifier.success('Link in Zwischenablage kopiert')
+        notifier.success('Link copied to clipboard.')
       }
     },
 
@@ -225,25 +225,25 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     }
   }
 
-  // Получаем настройки плагина
+  // We are retrieving the plugin settings.
   const settings = await peertubeHelpers.getSettings()
   const uploadPath = settings['page-path'] || 'files/upload'
 
-  // 1. РЕГИСТРАЦИЯ МАРШРУТА ДЛЯ ОБЫЧНЫХ ПОЛЬЗОВАТЕЛЕЙ - ЗАГРУЗКА ФАЙЛОВ
+  // 1. ROUTE REGISTRATION FOR REGULAR USERS - FILE UPLOAD
   registerClientRoute({
     route: uploadPath,
     onMount: async ({ rootEl }) => {
       console.log('Static Files: upload route mounted')
 
-      // Проверяем авторизацию
+      // Checking authorization
       if (!peertubeHelpers.isLoggedIn()) {
         rootEl.innerHTML = `
           <div class="margin-content col-md-12 col-xl-8" style="padding-top: 30px;">
             <div style="text-align: center; padding: 40px; font-family: sans-serif;">
-              <h2>🔒 Anmeldung erforderlich</h2>
-              <p>Sie müssen angemeldet sein, um diese Seite zu nutzen.</p>
+              <h2>🔒 Registration required</h2>
+              <p>You must be logged in to use this page.</p>
               <a href="/login" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
-                Anmelden
+                Register
               </a>
             </div>
           </div>
@@ -251,7 +251,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         return
       }
 
-      // Проверяем доступ к API
+      // Checking API access.
       try {
         const authHeader = peertubeHelpers.getAuthHeader()
         const response = await fetch('/plugins/static-files/router/check-access', {
@@ -274,41 +274,41 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         rootEl.innerHTML = `
           <div class="margin-content col-md-12 col-xl-8" style="padding-top: 30px;">
             <div style="text-align: center; padding: 40px; font-family: sans-serif;">
-              <h2>⚠️ Fehler</h2>
-              <p>Fehler beim Laden der Seite: ${error.message}</p>
+              <h2>⚠️ Error</h2>
+              <p>Error loading the page: ${error.message}</p>
               <button onclick="location.reload()" style="background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
-                Seite neu laden
+                Reload page
               </button>
             </div>
           </div>
         `
       }
 
-      // Устанавливаем заголовок страницы
+      // Setting the page title.
       try {
         const config = await peertubeHelpers.getServerConfig()
-        document.title = `Datei-Upload - ${config.instance.name}`
+        document.title = `Date-Upload - ${config.instance.name}`
       } catch (e) {
-        document.title = 'Datei-Upload'
+        document.title = 'Date-Upload'
       }
     }
   })
 
-  // 2. РЕГИСТРАЦИЯ МАРШРУТА ДЛЯ АДМИНОВ - УПРАВЛЕНИЕ ФАЙЛАМИ
+  // 2. ROUTE REGISTRATION FOR ADMINISTRATORS - FILE MANAGEMENT
   registerClientRoute({
     route: 'files/admin',
     onMount: async ({ rootEl }) => {
       console.log('Static Files: admin route mounted')
 
-      // Проверяем авторизацию
+      // Checking authorization
       if (!peertubeHelpers.isLoggedIn()) {
         rootEl.innerHTML = `
           <div class="margin-content col-md-12 col-xl-8" style="padding-top: 30px;">
             <div style="text-align: center; padding: 40px; font-family: sans-serif;">
-              <h2>🔒 Anmeldung erforderlich</h2>
-              <p>Sie müssen angemeldet sein, um diese Seite zu nutzen.</p>
+              <h2>🔒 Registration required</h2>
+              <p>You must be logged in to use this page.</p>
               <a href="/login" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
-                Anmelden
+                Register
               </a>
             </div>
           </div>
@@ -316,7 +316,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         return
       }
 
-      // Проверяем доступ к админ-функциям
+      // Checking access to admin functions.
       try {
         const authHeader = peertubeHelpers.getAuthHeader()
         const response = await fetch('/plugins/static-files/router/check-access', {
@@ -335,47 +335,47 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
           showAccessDenied(rootEl)
         }
       } catch (error) {
-        console.error('Fehler bei Admin-API-Aufruf:', error)
+        console.error('Error during admin API call:', error)
         rootEl.innerHTML = `
           <div class="margin-content col-md-12 col-xl-8" style="padding-top: 30px;">
             <div style="text-align: center; padding: 40px; font-family: sans-serif;">
-              <h2>⚠️ Fehler</h2>
-              <p>Fehler beim Laden der Admin-Seite: ${error.message}</p>
+              <h2>⚠️ Error</h2>
+              <p>Error loading the admin page: ${error.message}</p>
               <button onclick="location.reload()" style="background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
-                Seite neu laden
+                Reload page
               </button>
             </div>
           </div>
         `
       }
 
-      // Устанавливаем заголовок страницы
+      // Setting the page title.
       try {
         const config = await peertubeHelpers.getServerConfig()
-        document.title = `Datei-Verwaltung - ${config.instance.name}`
+        document.title = `File management - ${config.instance.name}`
       } catch (e) {
-        document.title = 'Datei-Verwaltung'
+        document.title = 'File management'
       }
     }
   })
 
   // StatsPage class is now loaded from stats-page.js
 
-  // 3. РЕГИСТРАЦИЯ МАРШРУТА ДЛЯ АДМИНСКОЙ СТАТИСТИКИ
+  // 3. ROUTE REGISTRATION FOR ADMINISTRATIVE STATISTICS
   registerClientRoute({
     route: 'admin/stats',
     onMount: async ({ rootEl }) => {
       console.log('Static Files: admin stats route mounted')
 
-      // Проверяем авторизацию
+      // Checking authorization
       if (!peertubeHelpers.isLoggedIn()) {
         rootEl.innerHTML = `
           <div class="margin-content col-md-12 col-xl-8" style="padding-top: 30px;">
             <div style="text-align: center; padding: 40px; font-family: sans-serif;">
-              <h2>🔒 Anmeldung erforderlich</h2>
-              <p>Sie müssen angemeldet sein, um diese Seite zu nutzen.</p>
+              <h2>🔒 Registration required</h2>
+              <p>You must be logged in to use this page.</p>
               <a href="/login" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
-                Anmelden
+                Register
               </a>
             </div>
           </div>
@@ -383,7 +383,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         return
       }
 
-      // Проверяем доступ к админ-функциям
+      // Checking access to admin functions.
       try {
         const authHeader = peertubeHelpers.getAuthHeader()
         const response = await fetch('/plugins/static-files/router/check-access', {
@@ -397,33 +397,33 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         const accessData = await response.json()
 
         if (accessData.allowed && (accessData.user.role === 0 || accessData.user.role === 1)) {
-          // Создаем экземпляр StatsPage и показываем страницу
+          // We create an instance of StatsPage and display the page.
           const statsPage = new StatsPage(peertubeHelpers)
           await statsPage.showPage({ rootEl })
         } else {
           showAccessDenied(rootEl)
         }
       } catch (error) {
-        console.error('Fehler bei Stats-API-Aufruf:', error)
+        console.error('Error during stats API call:', error)
         rootEl.innerHTML = `
           <div class="margin-content col-md-12 col-xl-8" style="padding-top: 30px;">
             <div style="text-align: center; padding: 40px; font-family: sans-serif;">
-              <h2>⚠️ Fehler</h2>
-              <p>Fehler beim Laden der Statistiken: ${error.message}</p>
+              <h2>⚠️ Error</h2>
+              <p>Error loading statistics: ${error.message}</p>
               <button onclick="location.reload()" style="background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
-                Seite neu laden
+                Reload page
               </button>
             </div>
           </div>
         `
       }
 
-      // Устанавливаем заголовок страницы
+      // Setting the page title.
       try {
         const config = await peertubeHelpers.getServerConfig()
-        document.title = `Instance Statistiken - ${config.instance.name}`
+        document.title = `Instance Statistics - ${config.instance.name}`
       } catch (e) {
-        document.title = 'Instance Statistiken'
+        document.title = 'Instance Statistics'
       }
     }
   })
@@ -432,15 +432,15 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     rootEl.innerHTML = `
       <div class="margin-content col-md-12 col-xl-8" style="padding-top: 30px;">
         <div style="text-align: center; padding: 40px; font-family: sans-serif;">
-          <h2>🚫 Zugriff verweigert</h2>
-          <p>Sie haben keine Berechtigung für diese Seite.</p>
-          <p>Wenden Sie sich an einen Administrator.</p>
+          <h2>🚫 Access denied</h2>
+          <p>You do not have permission to access this page.</p>
+          <p>Contact an administrator.</p>
         </div>
       </div>
     `
   }
 
-  // ФУНКЦИЯ СОЗДАНИЯ ИНТЕРФЕЙСА ЗАГРУЗКИ (для обычных пользователей)
+  // FUNCTION FOR CREATING A DOWNLOAD INTERFACE (for regular users)
   function createUploadInterface(rootEl, accessData) {
     const { settings, user } = accessData
 
@@ -449,23 +449,23 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
 
         <div class="card mb-4">
           <div class="card-body text-center">
-            <h1 class="card-title">📁 Datei-Upload</h1>
-            <p class="card-text">Willkommen, <strong>${user.username}</strong>!</p>
+            <h1 class="card-title">📁 Data-Upload</h1>
+            <p class="card-text">Welcome, <strong>${user.username}</strong>!</p>
           </div>
         </div>
 
         <div class="card mb-4">
           <div class="card-body">
-            <h3 class="card-title">📤 Dateien hochladen</h3>
+            <h3 class="card-title">📤 Upload files</h3>
 
             <div id="drop-zone" class="upload-drop-zone mb-3">
               <div>
                 <div class="display-4 text-primary mb-3">☁️</div>
-                <h4 class="text-muted">Dateien hier hineinziehen</h4>
-                <p class="text-muted">oder klicken zum Auswählen</p>
+                <h4 class="text-muted">Drag and drop files here.</h4>
+                <p class="text-muted">or click to select</p>
                 <p class="small text-muted">
-                  <strong>Erlaubte Typen:</strong> ${getFileTypesText(settings.allowedFileTypes).replace('ICO', 'ICO, SVG')}<br>
-                  <strong>Max. Größe:</strong> ${settings.maxFileSize}MB
+                  <strong>Allowed types:</strong> ${getFileTypesText(settings.allowedFileTypes).replace('ICO', 'ICO, SVG')}<br>
+                  <strong>Maximum size:</strong> ${settings.maxFileSize}MB
                 </p>
               </div>
             </div>
@@ -479,11 +479,11 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
 
         <div class="card">
           <div class="card-body">
-            <h3 class="card-title">📋 Meine Dateien</h3>
+            <h3 class="card-title">📋 My files</h3>
             <div id="files-list">
               <div class="text-center text-muted p-4">
                 <div class="display-4">⏳</div>
-                <p>Dateien werden geladen...</p>
+                <p>Files are being loaded...</p>
               </div>
             </div>
           </div>
@@ -495,7 +495,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     initializeUpload(settings)
   }
 
-  // ФУНКЦИЯ СОЗДАНИЯ АДМИН-ИНТЕРФЕЙСА (для администраторов)
+  // ADMIN INTERFACE CREATION FUNCTION (for administrators)
   function createAdminInterface(rootEl, accessData) {
     const { user } = accessData
 
@@ -507,61 +507,61 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
               <div>
-                <h1 class="card-title mb-1">📁 Datei-Verwaltung (Admin)</h1>
-                <p class="card-text text-muted">Willkommen, <strong>${user.username}</strong> (${user.roleText})</p>
+                <h1 class="card-title mb-1">📁 File management (Admin)</h1>
+                <p class="card-text text-muted">Welcome, <strong>${user.username}</strong> (${user.roleText})</p>
               </div>
               <div>
                 <a href="/p/${uploadPath}" class="btn btn-outline-primary">
-                  📤 Zum Upload
+                  📤 For upload
                 </a>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Управляющие кнопки -->
+        <!-- Control buttons -->
         <div class="card mb-4">
           <div class="card-body">
-            <h3 class="card-title">🛠️ Verwaltung</h3>
+            <h3 class="card-title">🛠️ Administration</h3>
             <div class="btn-group" role="group">
               <button id="admin-refresh-btn" class="btn btn-primary">
-                🔄 Dateien aktualisieren
+                🔄 Update files
               </button>
               <button id="admin-cleanup-btn" class="btn btn-warning">
-                🧹 Aufräumen
+                🧹 Clean up
               </button>
               <button id="admin-stats-btn" class="btn btn-info">
-                📊 Statistiken
+                📊 Statistics
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Статистика (скрытая по умолчанию) -->
+        <!-- Stats (hidden by default) -->
         <div id="admin-stats" class="card mb-4" style="display: none;">
           <div class="card-body">
-            <h3 class="card-title">📊 Statistiken</h3>
+            <h3 class="card-title">📊 Statistics</h3>
             <div id="stats-content" class="row">
               <div class="col-12 text-center">
                 <div class="spinner-border text-primary" role="status">
                   <span class="sr-only">Lädt...</span>
                 </div>
-                <p class="mt-2">Lade Statistiken...</p>
+                <p class="mt-2">Loading statistics...</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Список файлов -->
+        <!-- List of files -->
         <div class="card">
           <div class="card-body">
-            <h3 class="card-title">📋 Alle Dateien</h3>
+            <h3 class="card-title">📋 All files</h3>
             <div id="admin-files-container">
               <div class="text-center p-4">
                 <div class="spinner-border text-primary" role="status">
-                  <span class="sr-only">Lädt...</span>
+                  <span class="sr-only">Loading...</span>
                 </div>
-                <p class="mt-2">Lade Dateien...</p>
+                <p class="mt-2">Loading files...</p>
               </div>
             </div>
           </div>
@@ -573,18 +573,18 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     initializeAdminInterface()
   }
 
-  // ИНИЦИАЛИЗАЦИЯ АДМИН-ИНТЕРФЕЙСА
+  // ADMIN INTERFACE INITIALIZATION
   function initializeAdminInterface() {
-    // Обработчики кнопок
+    // Button handlers
     document.getElementById('admin-refresh-btn')?.addEventListener('click', loadAdminFiles)
     document.getElementById('admin-cleanup-btn')?.addEventListener('click', handleAdminCleanup)
     document.getElementById('admin-stats-btn')?.addEventListener('click', toggleAdminStats)
 
-    // Загружаем файлы при инициализации
+    // We load the files during initialization.
     loadAdminFiles()
   }
 
-  // ЗАГРУЗКА ФАЙЛОВ ДЛЯ АДМИНА
+  // FILE UPLOAD FOR ADMINISTRATOR
   async function loadAdminFiles() {
     const container = document.getElementById('admin-files-container')
     if (!container) return
@@ -592,9 +592,9 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     container.innerHTML = `
       <div class="text-center p-4">
         <div class="spinner-border text-primary" role="status">
-          <span class="sr-only">Lädt...</span>
+          <span class="sr-only">Loading...</span>
         </div>
-        <p class="mt-2">Lade Dateien...</p>
+        <p class="mt-2">Loading files...</p>
       </div>
     `
 
@@ -618,20 +618,20 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
       displayAdminFiles(data.files || [], data.stats || {})
 
     } catch (error) {
-      console.error('Fehler beim Laden der Admin-Dateien:', error)
+      console.error('Error loading the admin files:', error)
       container.innerHTML = `
         <div class="alert alert-danger">
-          <h5>⚠️ Fehler beim Laden der Dateien</h5>
+          <h5>⚠️ Error loading the files.</h5>
           <p><strong>Details:</strong> ${error.message}</p>
           <button class="btn btn-outline-danger btn-sm" onclick="window.loadAdminFiles()">
-            🔄 Erneut versuchen
+            🔄 Try again
           </button>
         </div>
       `
     }
   }
 
-  // ОТОБРАЖЕНИЕ ФАЙЛОВ ДЛЯ АДМИНА
+  // DISPLAYING FILES FOR THE ADMINISTRATOR
   function displayAdminFiles(files, stats) {
     const container = document.getElementById('admin-files-container')
     if (!container) return
@@ -640,18 +640,18 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
       container.innerHTML = `
         <div class="text-center p-5">
           <div style="font-size: 4rem;">📂</div>
-          <h4 class="mt-3">Keine Dateien vorhanden</h4>
-          <p class="text-muted">Es wurden noch keine Dateien hochgeladen.</p>
+          <h4 class="mt-3">No files available</h4>
+          <p class="text-muted">No files have been uploaded yet.</p>
         </div>
       `
       updateAdminStats(stats)
       return
     }
 
-    // Обновляем статистику
+    // Updating the statistics.
     updateAdminStats(stats)
 
-    // Сортируем файлы по дате загрузки (новые сначала)
+    // We are sorting the files by upload date (newest first).
     files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
 
     let html = `
@@ -667,7 +667,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
 
     files.forEach(file => {
       const statusClass = file.hasMetadata ? 'status-with-metadata' : 'status-without-metadata'
-      const statusText = file.hasMetadata ? 'Mit Metadaten' : 'Ohne Metadaten'
+      const statusText = file.hasMetadata ? 'With metadata' : 'Without metadata'
       const statusIcon = file.hasMetadata ? '✅' : '❌'
 
       html += `
@@ -684,30 +684,30 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
               </div>
               
               <div class="file-metadata">
-                <div>📏 <strong>Größe:</strong> ${formatFileSize(file.size)}</div>
-                <div>📅 <strong>Hochgeladen:</strong> ${formatDate(file.uploadDate)}</div>
-                <div>👤 <strong>Von:</strong> ${file.uploadedBy}</div>
-                <div>📂 <strong>Kategorie:</strong> ${file.category}</div>
+                <div>📏 <strong>Size:</strong> ${formatFileSize(file.size)}</div>
+                <div>📅 <strong>Uploaded:</strong> ${formatDate(file.uploadDate)}</div>
+                <div>👤 <strong>From:</strong> ${file.uploadedBy}</div>
+                <div>📂 <strong>Category:</strong> ${file.category}</div>
                 <div>🗂️ <strong>MIME:</strong> ${file.mimetype}</div>
               </div>
             </div>
 
             <div class="file-actions">
               <button class="btn btn-outline-primary btn-sm" 
-                      onclick="previewAdminFile('${file.url}')" title="Vorschau">
-                👁️ Ansehen
+                      onclick="previewAdminFile('${file.url}')" title="Preview">
+                👁️ View
               </button>
               <button class="btn btn-outline-secondary btn-sm" 
                       onclick="copyAdminFileLink('${file.url}')" title="Link kopieren">
-                📋 Kopieren
+                📋 Copy link
               </button>
               <button class="btn btn-outline-info btn-sm" 
-                      onclick="downloadAdminFile('${file.url}', '${file.filename}')" title="Herunterladen">
+                      onclick="downloadAdminFile('${file.url}', '${file.filename}')" title="Download">
                 💾 Download
               </button>
               <button class="btn btn-outline-danger btn-sm" 
-                      onclick="deleteAdminFile('${file.category}', '${file.filename}')" title="Löschen">
-                🗑️ Löschen
+                      onclick="deleteAdminFile('${file.category}', '${file.filename}')" title="Delete">
+                🗑️ Delete
               </button>
             </div>
             
@@ -729,7 +729,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         <div class="card stats-card">
           <div class="card-body text-center">
             <div class="stats-number">${stats.total || 0}</div>
-            <div>📁 Gesamt</div>
+            <div>📁 In total</div>
           </div>
         </div>
       </div>
@@ -737,7 +737,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         <div class="card bg-success text-white">
           <div class="card-body text-center">
             <div class="stats-number">${stats.withMetadata || 0}</div>
-            <div>✅ Mit Metadaten</div>
+            <div>✅ With metadata</div>
           </div>
         </div>
       </div>
@@ -745,7 +745,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         <div class="card bg-warning text-white">
           <div class="card-body text-center">
             <div class="stats-number">${stats.withoutMetadata || 0}</div>
-            <div>❌ Ohne Metadaten</div>
+            <div>❌ Without metadata</div>
           </div>
         </div>
       </div>
@@ -753,16 +753,16 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         <div class="card bg-info text-white">
           <div class="card-body text-center">
             <div class="stats-number">${formatFileSize(stats.totalSize || 0)}</div>
-            <div>💾 Größe</div>
+            <div>💾 Size</div>
           </div>
         </div>
       </div>
     `
   }
 
-  // ОЧИСТКА ФАЙЛОВ (АДМИН)
+  // FILE CLEANUP (ADMIN)
   async function handleAdminCleanup() {
-    if (!confirm('Wirklich verwaiste Dateien aufräumen?\n\nDies wird alle Dateien löschen, die älter als 30 Tage sind und keine Metadaten haben.')) {
+    if (!confirm('FILE CLEANUP (ADMIN)\n\nThis will delete all files that are older than 30 days and do not have metadata.')) {
       return
     }
 
@@ -780,17 +780,17 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
       const result = await response.json()
 
       if (result.success) {
-        showMessage(`✅ Erfolgreich: ${result.message}`, 'success')
-        loadAdminFiles() // Обновляем список
+        showMessage(`✅ Successful: ${result.message}`, 'success')
+        loadAdminFiles() // Updating the list
       } else {
-        showMessage(`❌ Fehler: ${result.error || 'Aufräumen fehlgeschlagen'}`, 'error')
+        showMessage(`❌ Error: ${result.error || 'Cleanup failed'}`, 'error')
       }
     } catch (error) {
-      showMessage(`❌ Fehler beim Aufräumen: ${error.message}`, 'error')
+      showMessage(`❌ Error during cleanup: ${error.message}`, 'error')
     }
   }
 
-  // ПЕРЕКЛЮЧЕНИЕ СТАТИСТИКИ
+  // STATISTICS SWITCHING
   function toggleAdminStats() {
     const statsDiv = document.getElementById('admin-stats')
     if (statsDiv) {
@@ -799,16 +799,16 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
 
       const btn = document.getElementById('admin-stats-btn')
       if (btn) {
-        btn.textContent = isVisible ? '📊 Statistiken' : '📊 Statistiken ausblenden'
+        btn.textContent = isVisible ? '📊 Statistics' : '📊 Hide statistics'
       }
     }
   }
 
-  // ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ АДМИН-ИНТЕРФЕЙСА
+  // GLOBAL FUNCTIONS FOR THE ADMIN INTERFACE
   window.loadAdminFiles = loadAdminFiles
 
   window.deleteAdminFile = async function (category, filename) {
-    if (!confirm(`Datei "${filename}" wirklich löschen?`)) {
+    if (!confirm(`File "${filename}" Really delete?`)) {
       return
     }
 
@@ -826,13 +826,13 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
       const result = await response.json()
 
       if (result.success) {
-        showMessage('✅ Datei erfolgreich gelöscht', 'success')
-        loadAdminFiles() // Обновляем список
+        showMessage('✅ File successfully deleted', 'success')
+        loadAdminFiles() // Updating the list.
       } else {
-        showMessage(`❌ Fehler: ${result.error || 'Löschen fehlgeschlagen'}`, 'error')
+        showMessage(`❌ Error: ${result.error || 'Deletion failed'}`, 'error')
       }
     } catch (error) {
-      showMessage(`❌ Fehler beim Löschen: ${error.message}`, 'error')
+      showMessage(`❌ Error during deletion: ${error.message}`, 'error')
     }
   }
 
@@ -844,16 +844,16 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     const fullUrl = window.location.origin + url
     try {
       await navigator.clipboard.writeText(fullUrl)
-      showMessage('✅ Link in Zwischenablage kopiert!', 'success')
+      showMessage('✅ Link copied to clipboard!', 'success')
     } catch (error) {
-      // Fallback für ältere Browser
+      // Fallback for older browsers
       const textarea = document.createElement('textarea')
       textarea.value = fullUrl
       document.body.appendChild(textarea)
       textarea.select()
       document.execCommand('copy')
       document.body.removeChild(textarea)
-      showMessage('✅ Link in Zwischenablage kopiert!', 'success')
+      showMessage('✅ Link copied to clipboard!', 'success')
     }
   }
 
@@ -882,7 +882,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     }
   }
 
-  // ИНИЦИАЛИЗАЦИЯ ЗАГРУЗКИ ФАЙЛОВ (для обычных пользователей)
+  // FILE DOWNLOAD INITIALIZATION (for regular users)
   function initializeUpload(settings) {
     const dropZone = document.getElementById('drop-zone')
     const fileInput = document.getElementById('file-input')
@@ -927,12 +927,12 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
       uploadStatus.style.display = 'block'
       uploadStatus.innerHTML = `
         <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;">
-          <strong>Upload läuft...</strong>
+          <strong>Upload in progress...</strong>
           <div style="margin-top: 10px;">
             <div class="progress-container">
               <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
             </div>
-            <div id="progress-text" style="margin-top: 5px; font-size: 0.9rem;">Vorbereitung...</div>
+            <div id="progress-text" style="margin-top: 5px; font-size: 0.9rem;">Preparation...</div>
           </div>
         </div>
       `
@@ -943,25 +943,25 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
 
       for (const file of files) {
         try {
-          progressText.textContent = `Lade "${file.name}" hoch...`
+          progressText.textContent = `Load"${file.name}" high...`
 
           await uploadFile(file)
           completed++
 
           const progress = (completed / files.length) * 100
           progressBar.style.width = progress + '%'
-          progressText.textContent = `${completed} von ${files.length} Dateien hochgeladen`
+          progressText.textContent = `${completed} from ${files.length} Files uploaded`
 
         } catch (error) {
           console.error('Upload error:', error)
-          showMessage(`Fehler bei "${file.name}": ${error.message}`, 'error')
+          showMessage(`Errors in "${file.name}": ${error.message}`, 'error')
         }
       }
 
       setTimeout(() => {
         uploadStatus.style.display = 'none'
         loadFiles()
-        showMessage(`${completed} Datei(en) erfolgreich hochgeladen!`, 'success')
+        showMessage(`${completed} File(s) uploaded successfully!`, 'success')
       }, 1000)
 
       fileInput.value = ''
@@ -978,11 +978,11 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
           headers: peertubeHelpers.getAuthHeader() || {}
         })
 
-        // Проверяем статус ответа
+        // Check the status
         if (!response.ok) {
           let errorMessage = `HTTP ${response.status}: ${response.statusText}`
 
-          // Исправление: сначала клонируем response для повторного чтения
+          // Correction: first, we clone the response for repeated reading.
           const responseClone = response.clone()
 
           try {
@@ -990,22 +990,22 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
             if (errorData.error) {
               errorMessage = errorData.error
 
-              // Специальная обработка для ошибок размера файла
+              // Special handling for file size errors
               if (errorData.errorCode === 'FILE_TOO_LARGE' || errorData.errorCode === 'FIELD_TOO_LARGE') {
-                errorMessage = `Datei "${file.name}" ist zu groß. Maximum: ${errorData.maxSize}MB`
+                errorMessage = `File "${file.name}" is too large. Maximum: ${errorData.maxSize}MB`
               }
             }
           } catch (parseError) {
-            // Если не удалось распарсить JSON, используем клонированный response
+            // If parsing the JSON fails, we use the cloned response.
             try {
               const htmlResponse = await responseClone.text()
               if (response.status === 413 || htmlResponse.includes('413') || htmlResponse.includes('too large')) {
-                errorMessage = `Datei "${file.name}" ist zu groß (${Math.round(file.size / 1024 / 1024 * 10) / 10}MB). Maximum erlaubt: 100MB. Möglicherweise ist auch das Nginx-Limit zu niedrig.`
+                errorMessage = `File "${file.name}" is too big (${Math.round(file.size / 1024 / 1024 * 10) / 10}MB). Maximum allowed: 100MB. The Nginx limit might also be too low.`
               }
             } catch (textError) {
               // Fallback
               if (response.status === 413) {
-                errorMessage = `Datei "${file.name}" ist zu groß (${Math.round(file.size / 1024 / 1024 * 10) / 10}MB). Server-Limit erreicht.`
+                errorMessage = `File "${file.name}" is too big (${Math.round(file.size / 1024 / 1024 * 10) / 10}MB). Server limit reached.`
               }
             }
           }
@@ -1018,7 +1018,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         if (result.success) {
           return result.file
         } else {
-          throw new Error(result.error || 'Upload fehlgeschlagen')
+          throw new Error(result.error || 'Upload failed')
         }
       } catch (error) {
         console.error('Upload error details:', error)
@@ -1039,8 +1039,8 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
           filesList.innerHTML = `
             <div style="text-align: center; padding: 40px; color: #666;">
               <div style="font-size: 3rem; margin-bottom: 15px;">📂</div>
-              <h4>Keine Dateien vorhanden</h4>
-              <p>Laden Sie Ihre erste Datei hoch!</p>
+              <h4>No files available</h4>
+              <p>Upload your first file!</p>
             </div>
           `
           return
@@ -1055,15 +1055,15 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
                 <div>
                   <div><strong>${file.filename}</strong></div>
                   <div class="text-muted small">
-                    ${formatFileSize(file.size)} • ${formatDate(file.uploadDate)}${file.uploadedBy ? ` • von ${file.uploadedBy}` : ''}
+                    ${formatFileSize(file.size)} • ${formatDate(file.uploadDate)}${file.uploadedBy ? ` • from ${file.uploadedBy}` : ''}
                   </div>
                 </div>
               </div>
 
               <div class="btn-group btn-group-sm" role="group">
-                <button class="btn btn-outline-secondary" onclick="copyLink('${file.url}')" title="Link kopieren">📋</button>
-                <button class="btn btn-outline-primary" onclick="openFile('${file.url}')" title="Ansehen">👁️</button>
-                <button class="btn btn-outline-danger" onclick="deleteFile('${file.category}', '${file.filename}')" title="Löschen">🗑️</button>
+                <button class="btn btn-outline-secondary" onclick="copyLink('${file.url}')" title="Copy link">📋</button>
+                <button class="btn btn-outline-primary" onclick="openFile('${file.url}')" title="View">👁️</button>
+                <button class="btn btn-outline-danger" onclick="deleteFile('${file.category}', '${file.filename}')" title="Delete">🗑️</button>
               </div>
 
             </div>
@@ -1074,7 +1074,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         console.error('Load files error:', error)
         filesList.innerHTML = `
           <div class="error-message">
-            <strong>Fehler beim Laden der Dateien</strong><br>
+            <strong>Error loading the files.</strong><br>
             ${error.message}
           </div>
         `
@@ -1086,7 +1086,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
       const fullUrl = window.location.origin + url
       try {
         await navigator.clipboard.writeText(fullUrl)
-        showMessage('Link in Zwischenablage kopiert!', 'success')
+        showMessage('Link copied to clipboard!', 'success')
       } catch (error) {
         // Fallback
         const textarea = document.createElement('textarea')
@@ -1095,7 +1095,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         textarea.select()
         document.execCommand('copy')
         document.body.removeChild(textarea)
-        showMessage('Link in Zwischenablage kopiert!', 'success')
+        showMessage('Link copied to clipboard!', 'success')
       }
     }
 
@@ -1104,7 +1104,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     }
 
     window.deleteFile = async function (category, filename) {
-      if (!confirm(`Datei "${filename}" wirklich löschen?`)) return
+      if (!confirm(`File "${filename}" Really delete?`)) return
 
       try {
         const response = await fetch(`/plugins/static-files/router/file/${category}/${filename}`, {
@@ -1115,21 +1115,21 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
         const result = await response.json()
 
         if (result.success) {
-          showMessage('Datei erfolgreich gelöscht', 'success')
+          showMessage('File successfully deleted', 'success')
           loadFiles()
         } else {
-          throw new Error(result.error || 'Löschen fehlgeschlagen')
+          throw new Error(result.error || 'Deletion failed')
         }
       } catch (error) {
-        showMessage('Fehler beim Löschen: ' + error.message, 'error')
+        showMessage('Error during deletion: ' + error.message, 'error')
       }
     }
 
-    // Загружаем файлы при инициализации
+    // We load the files during initialization.
     loadFiles()
   }
 
-  // УТИЛИТЫ
+  // UTILITIES
   function showMessage(text, type) {
     const div = document.createElement('div')
     div.className = `toast-notification ${type}`
@@ -1175,7 +1175,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
   console.log('Static Files Plugin: client registered successfully')
 }
 
-// ВАЖНО: Именованный экспорт!
+// IMPORTANT: Named export!
 export {
   register
 }
@@ -1199,54 +1199,54 @@ class StatsPage {
           
           <!-- Header -->
           <div class="stats-header">
-            <h1>📊 Instance Statistiken</h1>
-            <p>Detaillierte Übersicht über Ihre PeerTube-Instanz</p>
+            <h1>📊 Instance Statistics</h1>
+            <p>Detailed overview of your Media Platform</p>
           </div>
 
           <!-- Main Metrics -->
           <div id="main-metrics" class="metrics-grid">
             <div class="loading-container">
               <div class="loading-spinner"></div>
-              <p>Lade Statistiken...</p>
+              <p>Added the statistics...</p>
             </div>
           </div>
 
           <!-- Video Statistics Section -->
           <div class="stats-section">
             <div class="stats-section-header">
-              <h2 class="stats-section-title">📺 Video Statistiken</h2>
+              <h2 class="stats-section-title">📺 Video Statistics</h2>
             </div>
             
             <div class="stats-controls mb-3">
               <div class="control-group">
-                <label class="control-label" for="stats-from">Von:</label>
+                <label class="control-label" for="stats-from">From:</label>
                 <input type="date" id="stats-from" class="control-input" 
                        value="${new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}">
               </div>
               <div class="control-group">
-                <label class="control-label" for="stats-to">Bis:</label>
+                <label class="control-label" for="stats-to">Until:</label>
                 <input type="date" id="stats-to" class="control-input" 
                        value="${new Date().toISOString().split('T')[0]}">
               </div>
               <div class="control-group">
-                <label class="control-label" for="stats-group">Gruppierung:</label>
+                <label class="control-label" for="stats-group">Grouping:</label>
                 <select id="stats-group" class="control-select">
-                  <option value="day">Tag</option>
-                  <option value="month">Monat</option>
-                  <option value="year">Jahr</option>
+                  <option value="day">Day</option>
+                  <option value="month">Month</option>
+                  <option value="year">Year</option>
                 </select>
               </div>
               <div class="control-group">
                 <label class="control-label" style="opacity: 0;">.</label>
                 <button id="load-video-stats" class="control-button">
-                  🔄 Laden
+                  🔄 Load
                 </button>
               </div>
             </div>
 
             <div id="video-stats">
               <p class="text-center" style="color: rgba(255,255,255,0.5); padding: 2rem;">
-                Klicken Sie "Laden" um Video-Statistiken anzuzeigen
+                Click "Load" to view video statistics.
               </p>
             </div>
           </div>
@@ -1254,12 +1254,12 @@ class StatsPage {
           <!-- Activity Heatmap Section -->
           <div class="stats-section">
             <div class="stats-section-header">
-              <h2 class="stats-section-title">🔥 Aktivitäts-Heatmap</h2>
+              <h2 class="stats-section-title">🔥 Activity Heatmap</h2>
             </div>
             
             <div id="activity-heatmap">
               <p class="text-center" style="color: rgba(255,255,255,0.5); padding: 2rem;">
-                Wird mit Video-Statistiken geladen...
+                Loading video statistics...
               </p>
             </div>
           </div>
@@ -1267,12 +1267,12 @@ class StatsPage {
           <!-- Retention Distribution Section -->
           <div class="stats-section">
             <div class="stats-section-header">
-              <h2 class="stats-section-title">📊 Watch Time Verteilung</h2>
+              <h2 class="stats-section-title">📊 Watch Time Distribution</h2>
             </div>
             
             <div id="retention-distribution">
               <p class="text-center" style="color: rgba(255,255,255,0.5); padding: 2rem;">
-                Wird mit Video-Statistiken geladen...
+                Loading video statistics...
               </p>
             </div>
           </div>
@@ -1280,12 +1280,12 @@ class StatsPage {
           <!-- Top Channels Section -->
           <div class="stats-section">
             <div class="stats-section-header">
-              <h2 class="stats-section-title">🏆 Top Kanäle</h2>
+              <h2 class="stats-section-title">🏆 Top Channels</h2>
             </div>
             
             <div id="top-channels">
               <p class="text-center" style="color: rgba(255,255,255,0.5); padding: 2rem;">
-                Wird mit Video-Statistiken geladen...
+                Loading video statistics...
               </p>
             </div>
           </div>
@@ -1293,20 +1293,20 @@ class StatsPage {
           <!-- Categories & Growth Section -->
           <div class="stats-section">
             <div class="stats-section-header">
-              <h2 class="stats-section-title">🚀 Kategorien & Wachstum</h2>
+              <h2 class="stats-section-title">🚀 Categories & Growth</h2>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
               <div>
                 <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">
-                  🏷️ Top Kategorien
+                  🏷️ Top Categories
                 </h3>
                 <div id="top-categories"></div>
               </div>
               
               <div>
                 <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">
-                  📈 Schnell Wachsende Videos
+                  📈 Fast-growing videos
                 </h3>
                 <div id="fast-growing-videos"></div>
               </div>
@@ -1347,12 +1347,12 @@ class StatsPage {
       if (result.status === 'success') {
         this.displayMainStats(result.data, container);
       } else {
-        throw new Error(result.message || 'Fehler beim Laden');
+        throw new Error(result.message || 'Error loading');
       }
     } catch (error) {
       container.innerHTML = `
         <div style="grid-column: 1/-1; color: #ef4444; text-align: center; padding: 2rem;">
-          <strong>Fehler:</strong> ${error.message}
+          <strong>Error:</strong> ${error.message}
         </div>
       `;
     }
@@ -1368,32 +1368,32 @@ class StatsPage {
     };
 
     const watchTimeLabel = data.isEstimated ?
-      'Geschätzte Wiedergabezeit' : 'Wiedergabezeit';
+      'Estimated playback time' : 'Playback time';
     const watchTimeSubtitle = data.isEstimated ?
-      'Basiert auf Aufrufen × Videolänge' : 'Basiert auf detaillierten Protokollen';
+      'Based on views × video length' : 'Based on detailed protocols.';
 
     container.innerHTML = `
       <!-- Row 1: Main Stats -->
       <div class="metric-card blue">
-        <div class="metric-label">👥 Benutzer gesamt</div>
+        <div class="metric-label">👥 Total users</div>
         <div class="metric-value">${data.usersCount}</div>
-        <div class="metric-subtitle">+${data.usersThisMonth} diesen Monat</div>
+        <div class="metric-subtitle">+${data.usersThisMonth} this month</div>
       </div>
 
       <div class="metric-card green">
-        <div class="metric-label">🎥 Videos gesamt</div>
+        <div class="metric-label">🎥 Total videos</div>
         <div class="metric-value">${data.videosCount}</div>
-        <div class="metric-subtitle">+${data.videosThisMonth} diesen Monat</div>
+        <div class="metric-subtitle">+${data.videosThisMonth} this month</div>
       </div>
 
       <div class="metric-card cyan">
-        <div class="metric-label">💾 Speicher belegt</div>
+        <div class="metric-label">💾 Storage used</div>
         <div class="metric-value">${formatSize(data.totalStorage || 0)}</div>
-        <div class="metric-subtitle">Gesamtspeichernutzung</div>
+        <div class="metric-subtitle">Total storage usage</div>
       </div>
 
       <div class="metric-card orange">
-        <div class="metric-label">💬 Kommentare / ❤️ Likes</div>
+        <div class="metric-label">💬 Comments / ❤️ Likes</div>
         <div class="metric-value">${data.totalComments || 0} / ${data.totalLikes || 0}</div>
         <div class="metric-subtitle">Community Engagement</div>
       </div>
@@ -1406,14 +1406,14 @@ class StatsPage {
       </div>
 
       <div class="metric-card pink">
-        <div class="metric-label">👁️ Eindeutige Zuschauer</div>
+        <div class="metric-label">👁️ Unique viewers</div>
         <div class="metric-value">${data.uniqueViewers || 0}</div>
-        <div class="metric-subtitle">In den letzten 30 Tagen</div>
+        <div class="metric-subtitle">In the last 30 days</div>
       </div>
 
       <!-- Row 3: DAU/WAU/MAU -->
       <div class="metric-card blue" style="grid-column: span 2;">
-        <div class="metric-label">📈 Aktive Zuschauer</div>
+        <div class="metric-label">📈 Active viewers</div>
         <div style="display: flex; gap: 2rem; align-items: flex-end; margin-top: 0.75rem;">
           <div>
             <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">DAU</div>
@@ -1432,7 +1432,7 @@ class StatsPage {
       </div>
 
       <div class="metric-card green">
-        <div class="metric-label">⏱️ Retention Metriken</div>
+        <div class="metric-label">⏱️ Retention metrics</div>
         <div style="margin-top: 0.75rem;">
           <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem;">Ø Watch Time:</div>
           <div class="metric-value" style="font-size: 1.75rem;">${Math.round(data.avgWatchTimeSeconds || 0)}<span class="metric-unit">s</span></div>
@@ -1454,10 +1454,10 @@ class StatsPage {
     const detailsHtml = `
       <div class="stats-section" style="grid-column: 1/-1; margin-top: 1rem;">
         <div class="data-grid">
-          ${this.renderDataCard('📱 Geräte', data.viewersByDevice, 'device', 'views')}
-          ${this.renderDataCard('💻 Betriebssysteme', data.viewersByOS, 'operatingSystem', 'views')}
+          ${this.renderDataCard('📱 Devices', data.viewersByDevice, 'device', 'views')}
+          ${this.renderDataCard('💻 Operating systems', data.viewersByOS, 'operatingSystem', 'views')}
           ${this.renderDataCard('🌐 Browser', data.viewersByClient, 'client', 'views')}
-          ${this.renderDataCard('🌍 Länder', data.viewersByCountry?.slice(0, 5) || [], 'country', 'views')}
+          ${this.renderDataCard('🌍 Countries', data.viewersByCountry?.slice(0, 5) || [], 'country', 'views')}
           ${this.renderRegionsCard(data.viewersByRegion || [])}
         </div>
       </div>
@@ -1467,7 +1467,7 @@ class StatsPage {
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
           
           <div>
-            <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">🎥 Top Videos (nach Zeit)</h3>
+            <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">🎥 Top videos (by time)</h3>
             <table class="stats-table">
               <thead>
                 <tr>
@@ -1489,7 +1489,7 @@ class StatsPage {
           </div>
 
           <div>
-            <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">🏆 Top 5 Meistgesehene Videos</h3>
+            <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">🏆 Top 5 Most Viewed Videos</h3>
             <table class="stats-table">
               <thead>
                 <tr>
@@ -1522,14 +1522,14 @@ class StatsPage {
       return `
         <div class="data-card">
           <div class="data-card-header">${title}</div>
-          <div class="data-card-content" style="color: rgba(255,255,255,0.4);">Keine Daten</div>
+          <div class="data-card-content" style="color: rgba(255,255,255,0.4);">No data/div>
         </div>
       `;
     }
 
     const items = data.slice(0, 5).map(item => `
       <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-        <span style="color: rgba(255,255,255,0.7);">${item[nameKey] || 'Unbekannt'}</span>
+        <span style="color: rgba(255,255,255,0.7);">${item[nameKey] || 'Unknown'}</span>
         <span style="color: #fff; font-weight: 600;">${item[valueKey]}</span>
       </div>
     `).join('');
@@ -1546,7 +1546,7 @@ class StatsPage {
     if (!data || data.length === 0) {
       return `
         <div class="data-card" style="grid-column: span 2;">
-          <div class="data-card-header">🗺️ Top Regionen</div>
+          <div class="data-card-header">🗺️ Top Regions</div>
           <div class="data-card-content" style="color: rgba(255,255,255,0.4);">Keine Daten</div>
         </div>
       `;
@@ -1554,7 +1554,7 @@ class StatsPage {
 
     // Show top 10 regions
     const items = data.slice(0, 10).map(item => {
-      const regionName = item.region === 'Unknown' ? 'Unbekannt' : item.region;
+      const regionName = item.region === 'Unknown' ? 'Unknown' : item.region;
       const countryCode = item.country === 'Unknown' ? '' : ` (${item.country})`;
       const displayName = regionName + countryCode;
 
@@ -1597,7 +1597,7 @@ class StatsPage {
     container.innerHTML = `
       <div class="loading-container">
         <div class="loading-spinner"></div>
-        <p>Lade Video-Statistiken...</p>
+        <p>Loading video statistics...</p>
       </div>
     `;
 
@@ -1642,7 +1642,7 @@ class StatsPage {
     } catch (error) {
       container.innerHTML = `
       <div style="color: #ef4444; text-align: center; padding: 2rem;">
-        <strong>Fehler:</strong> ${error.message}
+        <strong>Error:</strong> ${error.message}
       </div>
     `;
     }
@@ -1653,7 +1653,7 @@ class StatsPage {
     if (!container || !heatmapData || heatmapData.length === 0) return;
 
     // Days and hours labels
-    const days = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+    const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
     const hours = Array.from({ length: 24 }, (_, i) => i);
 
     // Create data matrix (7 days × 24 hours)
@@ -1729,11 +1729,11 @@ class StatsPage {
         
         <!-- Legend -->
         <div style="margin-top: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-          <span style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Weniger</span>
+          <span style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Fewer</span>
           ${[0, 0.25, 0.5, 0.75, 1].map(intensity => `
             <div style="width: 30px; height: 20px; background: ${this.getHeatmapColor(intensity)}; border-radius: 3px;"></div>
           `).join('')}
-          <span style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Mehr</span>
+          <span style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">More</span>
         </div>
 
         <!-- Best times recommendation -->
@@ -1763,7 +1763,7 @@ class StatsPage {
     if (!heatmapData || heatmapData.length === 0) return '';
 
     // Group by day and find top 3 hours per day
-    const days = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const byDay = {};
 
     heatmapData.forEach(item => {
@@ -1787,13 +1787,13 @@ class StatsPage {
     return `
     <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 8px;">
       <h4 style="color: #fff; font-size: 1rem; margin: 0 0 1rem 0; font-weight: 600;">
-        💡 Beste Veröffentlichungszeiten
+        💡 Best publication times
       </h4>
       <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
         ${recommendations.map(rec => `
           <div>
             <div style="color: rgba(255,255,255,0.7); font-size: 0.85rem;">${rec.day}</div>
-            <div style="color: #fff; font-size: 1.1rem; font-weight: 600;">${rec.hour}:00 Uhr</div>
+            <div style="color: #fff; font-size: 1.1rem; font-weight: 600;">${rec.hour}:00 Clock</div>
             <div style="color: rgba(255,255,255,0.5); font-size: 0.75rem;">${rec.views} Views</div>
           </div>
         `).join('')}
@@ -1816,29 +1816,29 @@ class StatsPage {
     const html = `
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem;">
       <div class="metric-card blue">
-        <div class="metric-label">25. Perzentil</div>
+        <div class="metric-label">25th percentile</div>
         <div class="metric-value" style="font-size: 1.75rem;">${formatTime(percentiles.p25)}</div>
-        <div class="metric-subtitle">25% schauen weniger</div>
+        <div class="metric-subtitle">25% watch less.</div>
       </div>
       <div class="metric-card green">
-        <div class="metric-label">50. Perzentil (Median)</div>
+        <div class="metric-label">50th percentile (Median)</div>
         <div class="metric-value" style="font-size: 1.75rem;">${formatTime(percentiles.p50)}</div>
-        <div class="metric-subtitle">Typische Wiedergabezeit</div>
+        <div class="metric-subtitle">Typical playback time</div>
       </div>
       <div class="metric-card cyan">
-        <div class="metric-label">75. Perzentil</div>
+        <div class="metric-label">75th percentile</div>
         <div class="metric-value" style="font-size: 1.75rem;">${formatTime(percentiles.p75)}</div>
-        <div class="metric-subtitle">75% schauen weniger</div>
+        <div class="metric-subtitle">75% watch less.</div>
       </div>
       <div class="metric-card orange">
-        <div class="metric-label">90. Perzentil</div>
+        <div class="metric-label">90th percentile</div>
         <div class="metric-value" style="font-size: 1.75rem;">${formatTime(percentiles.p90)}</div>
-        <div class="metric-subtitle">Engagierte Zuschauer</div>
+        <div class="metric-subtitle">Engaged viewers</div>
       </div>
       <div class="metric-card purple">
-        <div class="metric-label">95. Perzentil</div>
+        <div class="metric-label">95th percentile</div>
         <div class="metric-value" style="font-size: 1.75rem;">${formatTime(percentiles.p95)}</div>
-        <div class="metric-subtitle">Top 5% Zuschauer</div>
+        <div class="metric-subtitle">Top 5% viewers</div>
       </div>
     </div>
 
@@ -1847,8 +1847,8 @@ class StatsPage {
         📈 Interpretation
       </h4>
       <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin: 0; line-height: 1.6;">
-        Die Hälfte Ihrer Zuschauer schaut <strong style="color: #fff;">${formatTime(percentiles.p50)}</strong> oder länger.
-        Die engagiertesten 10% schauen mindestens <strong style="color: #fff;">${formatTime(percentiles.p90)}</strong>.
+        Half of your viewers are watching. <strong style="color: #fff;">${formatTime(percentiles.p50)}</strong>or longer.
+        The most dedicated 10% watch at least... <strong style="color: #fff;">${formatTime(percentiles.p90)}</strong>.
       </p>
     </div>
   `;
@@ -1861,7 +1861,7 @@ class StatsPage {
     if (!container) return;
 
     if (!channels || channels.length === 0) {
-      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 2rem;">Keine Daten</p>';
+      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 2rem;">No data</p>';
       return;
     }
 
@@ -1896,7 +1896,7 @@ class StatsPage {
     if (!container) return;
 
     if (!categories || categories.length === 0) {
-      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 1rem;">Keine Kategorien</p>';
+      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 1rem;">No Categories</p>';
       return;
     }
 
@@ -1916,7 +1916,7 @@ class StatsPage {
       <table class="stats-table">
         <thead>
           <tr>
-            <th>Kategorie</th>
+            <th>Category</th>
             <th style="text-align: right;">Videos</th>
             <th style="text-align: right;">Views</th>
           </tr>
@@ -1924,7 +1924,7 @@ class StatsPage {
         <tbody>
           ${categories.map(cat => `
             <tr>
-              <td>${categoryNames[cat.category] || `Kategorie ${cat.category}`}</td>
+              <td>${categoryNames[cat.category] || `Category ${cat.category}`}</td>
               <td style="text-align: right;">${cat.videoCount}</td>
               <td style="text-align: right;">${cat.totalViews.toLocaleString()}</td>
             </tr>
@@ -1941,7 +1941,7 @@ class StatsPage {
     if (!container) return;
 
     if (!videos || videos.length === 0) {
-      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 1rem;">Keine wachsenden Videos</p>';
+      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 1rem;">No growing videos</p>';
       return;
     }
 
@@ -1950,7 +1950,7 @@ class StatsPage {
         <thead>
           <tr>
             <th>Video</th>
-            <th style="text-align: right;">Wachstum</th>
+            <th style="text-align: right;">Growth</th>
           </tr>
         </thead>
         <tbody>
@@ -1986,7 +1986,7 @@ class StatsPage {
     if (!videoViewsStats || videoViewsStats.length === 0) {
       container.innerHTML = `
         <div style="color: rgba(255,255,255,0.6); text-align: center; padding: 2rem;">
-          <strong>Keine Daten:</strong> Für den gewählten Zeitraum wurden keine Video-Views gefunden.
+          <strong>No data:</strong> No video views were found for the selected time period.
         </div>
       `;
       return;
@@ -2021,7 +2021,7 @@ class StatsPage {
       <!-- Details Table -->
       <div style="margin-top: 2rem;">
         <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">
-          📅 Details nach Datum
+          📅 Details by date
         </h3>
         <div id="time-series-table"></div>
       </div>
@@ -2085,14 +2085,14 @@ class StatsPage {
       labels = watchTimeData.map(s => s.date);
       values = watchTimeData.map(s => s.hours || 0);
       maxVal = Math.max(...values, 1);
-      unit = 'Stunden';
+      unit = 'Hours';
       chartColor = '#8b5cf6';
     } else if (metric === 'activeViewers') {
       const activeData = window._statsData.activeViewers;
       labels = activeData.map(s => s.date);
       values = activeData.map(s => s.uniqueViewers || 0);
       maxVal = Math.max(...values, 1);
-      unit = 'Zuschauer';
+      unit = 'Viewers';
       chartColor = '#ec4899';
     }
 
@@ -2117,7 +2117,7 @@ class StatsPage {
     chartContainer.innerHTML = `
       <div class="chart-container">
         <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1.5rem; font-weight: 600;">
-          📈 ${unit} im Zeitverlauf
+          📈 ${unit} over time
         </h3>
         <div style="height: ${chartHeight}px; width: 100%; position: relative;">
           <svg width="100%" height="100%" preserveAspectRatio="none">
@@ -2149,8 +2149,8 @@ class StatsPage {
         tableRows += `
           <tr>
             <td><strong>${stat.date}</strong></td>
-            <td>${stat.hours.toFixed(1)} Stunden</td>
-            <td>${stat.seconds.toLocaleString()} Sekunden</td>
+            <td>${stat.hours.toFixed(1)} Hours</td>
+            <td>${stat.seconds.toLocaleString()} seconds</td>
           </tr>
         `;
       });
@@ -2159,7 +2159,7 @@ class StatsPage {
         tableRows += `
           <tr>
             <td><strong>${stat.date}</strong></td>
-            <td colspan="2">${stat.uniqueViewers} Eindeutige Zuschauer</td>
+            <td colspan="2">${stat.uniqueViewers} Unique viewers</td>
           </tr>
         `;
       });
@@ -2169,7 +2169,7 @@ class StatsPage {
       <table class="stats-table">
         <thead>
           <tr>
-            <th>Datum</th>
+            <th>Date</th>
             <th colspan="2">${unit}</th>
           </tr>
         </thead>

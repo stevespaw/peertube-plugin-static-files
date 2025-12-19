@@ -36,34 +36,34 @@ class StatsPage {
             
             <div class="stats-controls mb-3">
               <div class="control-group">
-                <label class="control-label" for="stats-from">Von:</label>
+                <label class="control-label" for="stats-from">From:</label>
                 <input type="date" id="stats-from" class="control-input" 
                        value="${new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}">
               </div>
               <div class="control-group">
-                <label class="control-label" for="stats-to">Bis:</label>
+                <label class="control-label" for="stats-to">Until:</label>
                 <input type="date" id="stats-to" class="control-input" 
                        value="${new Date().toISOString().split('T')[0]}">
               </div>
               <div class="control-group">
-                <label class="control-label" for="stats-group">Gruppierung:</label>
+                <label class="control-label" for="stats-group">Grouping:</label>
                 <select id="stats-group" class="control-select">
-                  <option value="day">Tag</option>
-                  <option value="month">Monat</option>
-                  <option value="year">Jahr</option>
+                  <option value="day">Day</option>
+                  <option value="month">Month</option>
+                  <option value="year">Year</option>
                 </select>
               </div>
               <div class="control-group">
                 <label class="control-label" style="opacity: 0;">.</label>
                 <button id="load-video-stats" class="control-button">
-                  🔄 Laden
+                  🔄 Load
                 </button>
               </div>
             </div>
 
             <div id="video-stats">
               <p class="text-center" style="color: rgba(255,255,255,0.5); padding: 2rem;">
-                Klicken Sie "Laden" um Video-Statistiken anzuzeigen
+                Click "Load" to view video statistics.
               </p>
             </div>
           </div>
@@ -71,12 +71,12 @@ class StatsPage {
           <!-- Activity Heatmap Section -->
           <div class="stats-section">
             <div class="stats-section-header">
-              <h2 class="stats-section-title">🔥 Aktivitäts-Heatmap</h2>
+              <h2 class="stats-section-title">🔥 Activity heatmap</h2>
             </div>
             
             <div id="activity-heatmap">
               <p class="text-center" style="color: rgba(255,255,255,0.5); padding: 2rem;">
-                Wird mit Video-Statistiken geladen...
+                Loading video statistics...
               </p>
             </div>
           </div>
@@ -84,12 +84,12 @@ class StatsPage {
           <!-- Retention Distribution Section -->
           <div class="stats-section">
             <div class="stats-section-header">
-              <h2 class="stats-section-title">📊 Watch Time Verteilung</h2>
+              <h2 class="stats-section-title">📊 Watch Time Distribution</h2>
             </div>
             
             <div id="retention-distribution">
               <p class="text-center" style="color: rgba(255,255,255,0.5); padding: 2rem;">
-                Wird mit Video-Statistiken geladen...
+                Loading video statistics...
               </p>
             </div>
           </div>
@@ -97,12 +97,12 @@ class StatsPage {
           <!-- Top Channels Section -->
           <div class="stats-section">
             <div class="stats-section-header">
-              <h2 class="stats-section-title">🏆 Top Kanäle</h2>
+              <h2 class="stats-section-title">🏆 Top channels</h2>
             </div>
             
             <div id="top-channels">
               <p class="text-center" style="color: rgba(255,255,255,0.5); padding: 2rem;">
-                Wird mit Video-Statistiken geladen...
+                Loading video statistics...
               </p>
             </div>
           </div>
@@ -110,20 +110,20 @@ class StatsPage {
           <!-- Categories & Growth Section -->
           <div class="stats-section">
             <div class="stats-section-header">
-              <h2 class="stats-section-title">🚀 Kategorien & Wachstum</h2>
+              <h2 class="stats-section-title">🚀 Categories & Growth</h2>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
               <div>
                 <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">
-                  🏷️ Top Kategorien
+                  🏷️ Top Categories
                 </h3>
                 <div id="top-categories"></div>
               </div>
               
               <div>
                 <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">
-                  📈 Schnell Wachsende Videos
+                  📈 Fast-growing videos
                 </h3>
                 <div id="fast-growing-videos"></div>
               </div>
@@ -164,12 +164,12 @@ class StatsPage {
       if (result.status === 'success') {
         this.displayMainStats(result.data, container);
       } else {
-        throw new Error(result.message || 'Fehler beim Laden');
+        throw new Error(result.message || 'Error loading');
       }
     } catch (error) {
       container.innerHTML = `
         <div style="grid-column: 1/-1; color: #ef4444; text-align: center; padding: 2rem;">
-          <strong>Fehler:</strong> ${error.message}
+          <strong>Error:</strong> ${error.message}
         </div>
       `;
     }
@@ -185,32 +185,32 @@ class StatsPage {
     };
 
     const watchTimeLabel = data.isEstimated ?
-      'Geschätzte Wiedergabezeit' : 'Wiedergabezeit';
+      'Estimated playback time' : 'Playback time';
     const watchTimeSubtitle = data.isEstimated ?
-      'Basiert auf Aufrufen × Videolänge' : 'Basiert auf detaillierten Protokollen';
+      'Based on views × video length' : 'Based on detailed protocols.';
 
     container.innerHTML = `
       <!-- Row 1: Main Stats -->
       <div class="metric-card blue">
-        <div class="metric-label">👥 Benutzer gesamt</div>
+        <div class="metric-label">👥 Total users</div>
         <div class="metric-value">${data.usersCount}</div>
-        <div class="metric-subtitle">+${data.usersThisMonth} diesen Monat</div>
+        <div class="metric-subtitle">+${data.usersThisMonth} this month</div>
       </div>
 
       <div class="metric-card green">
-        <div class="metric-label">🎥 Videos gesamt</div>
+        <div class="metric-label">🎥 Total videos</div>
         <div class="metric-value">${data.videosCount}</div>
-        <div class="metric-subtitle">+${data.videosThisMonth} diesen Monat</div>
+        <div class="metric-subtitle">+${data.videosThisMonth} this month</div>
       </div>
 
       <div class="metric-card cyan">
-        <div class="metric-label">💾 Speicher belegt</div>
+        <div class="metric-label">💾 Storage used</div>
         <div class="metric-value">${formatSize(data.totalStorage || 0)}</div>
-        <div class="metric-subtitle">Gesamtspeichernutzung</div>
+        <div class="metric-subtitle">Total storage usage</div>
       </div>
 
       <div class="metric-card orange">
-        <div class="metric-label">💬 Kommentare / ❤️ Likes</div>
+        <div class="metric-label">💬 Comments / ❤️ Likes</div>
         <div class="metric-value">${data.totalComments || 0} / ${data.totalLikes || 0}</div>
         <div class="metric-subtitle">Community Engagement</div>
       </div>
@@ -223,14 +223,14 @@ class StatsPage {
       </div>
 
       <div class="metric-card pink">
-        <div class="metric-label">👁️ Eindeutige Zuschauer</div>
+        <div class="metric-label">👁️ Unique viewers</div>
         <div class="metric-value">${data.uniqueViewers || 0}</div>
-        <div class="metric-subtitle">In den letzten 30 Tagen</div>
+        <div class="metric-subtitle">In the last 30 days</div>
       </div>
 
       <!-- Row 3: DAU/WAU/MAU -->
       <div class="metric-card blue" style="grid-column: span 2;">
-        <div class="metric-label">📈 Aktive Zuschauer</div>
+        <div class="metric-label">📈 Active viewers</div>
         <div style="display: flex; gap: 2rem; align-items: flex-end; margin-top: 0.75rem;">
           <div>
             <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">DAU</div>
@@ -249,7 +249,7 @@ class StatsPage {
       </div>
 
       <div class="metric-card green">
-        <div class="metric-label">⏱️ Retention Metriken</div>
+        <div class="metric-label">⏱️ Retention metrics</div>
         <div style="margin-top: 0.75rem;">
           <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem;">Ø Watch Time:</div>
           <div class="metric-value" style="font-size: 1.75rem;">${Math.round(data.avgWatchTimeSeconds || 0)}<span class="metric-unit">s</span></div>
@@ -271,10 +271,10 @@ class StatsPage {
     const detailsHtml = `
       <div class="stats-section" style="grid-column: 1/-1; margin-top: 1rem;">
         <div class="data-grid">
-          ${this.renderDataCard('📱 Geräte', data.viewersByDevice, 'device', 'views')}
-          ${this.renderDataCard('💻 Betriebssysteme', data.viewersByOS, 'operatingSystem', 'views')}
+          ${this.renderDataCard('📱 Devices', data.viewersByDevice, 'device', 'views')}
+          ${this.renderDataCard('💻 Operating systems', data.viewersByOS, 'operatingSystem', 'views')}
           ${this.renderDataCard('🌐 Browser', data.viewersByClient, 'client', 'views')}
-          ${this.renderDataCard('🌍 Länder', data.viewersByCountry?.slice(0, 5) || [], 'country', 'views')}
+          ${this.renderDataCard('🌍 Countries', data.viewersByCountry?.slice(0, 5) || [], 'country', 'views')}
           ${this.renderRegionsCard(data.viewersByRegion || [])}
         </div>
       </div>
@@ -306,12 +306,12 @@ class StatsPage {
           </div>
 
           <div>
-            <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">🏆 Top 5 Meistgesehene Videos</h3>
+            <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">🏆 Top 5 Most viewed videos</h3>
             <table class="stats-table">
               <thead>
                 <tr>
                   <th>Video</th>
-                  <th style="text-align: right;">Aufrufe</th>
+                  <th style="text-align: right;">Views</th>
                 </tr>
               </thead>
               <tbody>
@@ -339,14 +339,14 @@ class StatsPage {
       return `
         <div class="data-card">
           <div class="data-card-header">${title}</div>
-          <div class="data-card-content" style="color: rgba(255,255,255,0.4);">Keine Daten</div>
+          <div class="data-card-content" style="color: rgba(255,255,255,0.4);">No data</div>
         </div>
       `;
     }
 
     const items = data.slice(0, 5).map(item => `
       <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-        <span style="color: rgba(255,255,255,0.7);">${item[nameKey] || 'Unbekannt'}</span>
+        <span style="color: rgba(255,255,255,0.7);">${item[nameKey] || 'Unknown'}</span>
         <span style="color: #fff; font-weight: 600;">${item[valueKey]}</span>
       </div>
     `).join('');
@@ -363,7 +363,7 @@ class StatsPage {
     if (!data || data.length === 0) {
       return `
         <div class="data-card" style="grid-column: span 2;">
-          <div class="data-card-header">🗺️ Top Regionen</div>
+          <div class="data-card-header">🗺️ Top Regions</div>
           <div class="data-card-content" style="color: rgba(255,255,255,0.4);">Keine Daten</div>
         </div>
       `;
@@ -396,7 +396,7 @@ class StatsPage {
 
     return `
       <div class="data-card" style="grid-column: span 2;">
-        <div class="data-card-header">🗺️ Top Regionen</div>
+        <div class="data-card-header">🗺️ Top Regions</div>
         <div class="data-card-content">${items}</div>
       </div>
     `;
@@ -414,7 +414,7 @@ class StatsPage {
     container.innerHTML = `
       <div class="loading-container">
         <div class="loading-spinner"></div>
-        <p>Lade Video-Statistiken...</p>
+        <p>Loading video statistics...</p>
       </div>
     `;
 
@@ -459,7 +459,7 @@ class StatsPage {
     } catch (error) {
       container.innerHTML = `
       <div style="color: #ef4444; text-align: center; padding: 2rem;">
-        <strong>Fehler:</strong> ${error.message}
+        <strong>Error:</strong> ${error.message}
       </div>
     `;
     }
@@ -470,7 +470,7 @@ class StatsPage {
     if (!container || !heatmapData || heatmapData.length === 0) return;
 
     // Days and hours labels
-    const days = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+    const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
     const hours = Array.from({ length: 24 }, (_, i) => i);
 
     // Create data matrix (7 days × 24 hours)
@@ -580,7 +580,7 @@ class StatsPage {
     if (!heatmapData || heatmapData.length === 0) return '';
 
     // Group by day and find top 3 hours per day
-    const days = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const byDay = {};
 
     heatmapData.forEach(item => {
@@ -604,7 +604,7 @@ class StatsPage {
     return `
     <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 8px;">
       <h4 style="color: #fff; font-size: 1rem; margin: 0 0 1rem 0; font-weight: 600;">
-        💡 Beste Veröffentlichungszeiten
+        💡 Best publication times
       </h4>
       <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
         ${recommendations.map(rec => `
@@ -633,29 +633,29 @@ class StatsPage {
     const html = `
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem;">
       <div class="metric-card blue">
-        <div class="metric-label">25. Perzentil</div>
+        <div class="metric-label">25th percentile</div>
         <div class="metric-value" style="font-size: 1.75rem;">${formatTime(percentiles.p25)}</div>
-        <div class="metric-subtitle">25% schauen weniger</div>
+        <div class="metric-subtitle">25% watch less.</div>
       </div>
       <div class="metric-card green">
-        <div class="metric-label">50. Perzentil (Median)</div>
+        <div class="metric-label">50th percentile (median)</div>
         <div class="metric-value" style="font-size: 1.75rem;">${formatTime(percentiles.p50)}</div>
-        <div class="metric-subtitle">Typische Wiedergabezeit</div>
+        <div class="metric-subtitle">Typical playback time</div>
       </div>
       <div class="metric-card cyan">
-        <div class="metric-label">75. Perzentil</div>
+        <div class="metric-label">75th percentile</div>
         <div class="metric-value" style="font-size: 1.75rem;">${formatTime(percentiles.p75)}</div>
-        <div class="metric-subtitle">75% schauen weniger</div>
+        <div class="metric-subtitle">75% watch less.</div>
       </div>
       <div class="metric-card orange">
-        <div class="metric-label">90. Perzentil</div>
+        <div class="metric-label">90th percentile</div>
         <div class="metric-value" style="font-size: 1.75rem;">${formatTime(percentiles.p90)}</div>
-        <div class="metric-subtitle">Engagierte Zuschauer</div>
+        <div class="metric-subtitle">Engaged viewers</div>
       </div>
       <div class="metric-card purple">
-        <div class="metric-label">95. Perzentil</div>
+        <div class="metric-label">95th percentile</div>
         <div class="metric-value" style="font-size: 1.75rem;">${formatTime(percentiles.p95)}</div>
-        <div class="metric-subtitle">Top 5% Zuschauer</div>
+        <div class="metric-subtitle">Top 5% viewers</div>
       </div>
     </div>
 
@@ -664,8 +664,8 @@ class StatsPage {
         📈 Interpretation
       </h4>
       <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin: 0; line-height: 1.6;">
-        Die Hälfte Ihrer Zuschauer schaut <strong style="color: #fff;">${formatTime(percentiles.p50)}</strong> oder länger.
-        Die engagiertesten 10% schauen mindestens <strong style="color: #fff;">${formatTime(percentiles.p90)}</strong>.
+        Half of your viewers are watching. <strong style="color: #fff;">${formatTime(percentiles.p50)}</strong> oder länger.
+        The most dedicated 10% watch at least... <strong style="color: #fff;">${formatTime(percentiles.p90)}</strong>.
       </p>
     </div>
   `;
@@ -678,7 +678,7 @@ class StatsPage {
     if (!container) return;
 
     if (!channels || channels.length === 0) {
-      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 2rem;">Keine Daten</p>';
+      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 2rem;">No data</p>';
       return;
     }
 
@@ -686,7 +686,7 @@ class StatsPage {
       <table class="stats-table">
         <thead>
           <tr>
-            <th>Kanal</th>
+            <th>Channel</th>
             <th style="text-align: center;">Videos</th>
             <th style="text-align: right;">Views</th>
             <th style="text-align: right;">Watch Time (Std.)</th>
@@ -713,7 +713,7 @@ class StatsPage {
     if (!container) return;
 
     if (!categories || categories.length === 0) {
-      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 1rem;">Keine Kategorien</p>';
+      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 1rem;">No categories</p>';
       return;
     }
 
@@ -741,7 +741,7 @@ class StatsPage {
         <tbody>
           ${categories.map(cat => `
             <tr>
-              <td>${categoryNames[cat.category] || `Kategorie ${cat.category}`}</td>
+              <td>${categoryNames[cat.category] || `Category ${cat.category}`}</td>
               <td style="text-align: right;">${cat.videoCount}</td>
               <td style="text-align: right;">${cat.totalViews.toLocaleString()}</td>
             </tr>
@@ -758,7 +758,7 @@ class StatsPage {
     if (!container) return;
 
     if (!videos || videos.length === 0) {
-      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 1rem;">Keine wachsenden Videos</p>';
+      container.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 1rem;">No growing videos</p>';
       return;
     }
 
@@ -767,7 +767,7 @@ class StatsPage {
         <thead>
           <tr>
             <th>Video</th>
-            <th style="text-align: right;">Wachstum</th>
+            <th style="text-align: right;">Growth</th>
           </tr>
         </thead>
         <tbody>
@@ -803,7 +803,7 @@ class StatsPage {
     if (!videoViewsStats || videoViewsStats.length === 0) {
       container.innerHTML = `
         <div style="color: rgba(255,255,255,0.6); text-align: center; padding: 2rem;">
-          <strong>Keine Daten:</strong> Für den gewählten Zeitraum wurden keine Video-Views gefunden.
+          <strong>No data:</strong> No video views were found for the selected time period.
         </div>
       `;
       return;
@@ -838,7 +838,7 @@ class StatsPage {
       <!-- Details Table -->
       <div style="margin-top: 2rem;">
         <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1rem; font-weight: 600;">
-          📅 Details nach Datum
+          📅 Details by date
         </h3>
         <div id="time-series-table"></div>
       </div>
@@ -902,14 +902,14 @@ class StatsPage {
       labels = watchTimeData.map(s => s.date);
       values = watchTimeData.map(s => s.hours || 0);
       maxVal = Math.max(...values, 1);
-      unit = 'Stunden';
+      unit = 'Hours';
       chartColor = '#8b5cf6';
     } else if (metric === 'activeViewers') {
       const activeData = window._statsData.activeViewers;
       labels = activeData.map(s => s.date);
       values = activeData.map(s => s.uniqueViewers || 0);
       maxVal = Math.max(...values, 1);
-      unit = 'Zuschauer';
+      unit = 'Viewers';
       chartColor = '#ec4899';
     }
 
@@ -934,7 +934,7 @@ class StatsPage {
     chartContainer.innerHTML = `
       <div class="chart-container">
         <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 1.5rem; font-weight: 600;">
-          📈 ${unit} im Zeitverlauf
+          📈 ${unit} over Time
         </h3>
         <div style="height: ${chartHeight}px; width: 100%; position: relative;">
           <svg width="100%" height="100%" preserveAspectRatio="none">

@@ -1,6 +1,6 @@
 {
   "name": "peertube-plugin-static-files",
-  "description": "PeerTube Plugin zum Hochladen und Verwalten statischer Dateien mit Admin-Statistiken",
+  "description": "PeerTube plugin for uploading and managing static files with admin statistics.",
   "version": "1.6.9",
   "author": "yarkolife",
   "repository": {

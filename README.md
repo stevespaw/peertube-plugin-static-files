@@ -1,48 +1,48 @@
 # PeerTube Static Files & Admin Stats Plugin
 
-Ein umfassendes Plugin für PeerTube, das sowohl die Verwaltung statischer Dateien als auch detaillierte Administratorstatistiken in einer einheitlichen Lösung bietet.
+A comprehensive plugin for PeerTube that offers both static file management and detailed admin statistics in a unified solution.
 
-## 🚀 Hauptfunktionen
+## 🚀 Key Features
 
-### 📁 Datei-Management
-- **Upload von Bildern und Dokumenten** mit Drag & Drop-Interface
-- **Flexible Benutzerrechte** mit granularer Kontrolle
-- **Admin-Interface** für zentrale Dateiverwaltung
-- **Automatische Kategorisierung** nach Dateitypen
-- **Link-Sharing** mit einem Klick
+### 📁 File management
+- **Upload images and documents** with drag & drop interface
+- **Flexible user rights** with granular control
+- **Admin interface** for central file management
+- **Automatic categorization** by file types
+- **Link sharing** with one click
 
-### 📊 Administrator-Statistiken
-- **Instance-Metriken**: Benutzer, Videos, Speicherplatz, Engagement
-- **Video-Analytics**: Detaillierte Zuschauerzahlen, Wiedergabezeit (Watch Time)
-- **Top-Content**: Meistgesehene Videos und beliebteste Kanäle
-- **Zeitbasierte Auswertungen** mit flexibler Gruppierung
-- **Responsive Dashboards** mit dynamischen Diagrammen
-- **Echtzeit-Datenaktualisierung**
+### 📊 Admin stats
+- **Instance Metrics**: Users, Videos, Storage, Engagement
+- **Video Analytics**: Detailed viewership numbers, watch time
+- **Top Content**: Most viewed videos and most popular channels
+- **Time-based evaluations** with flexible grouping
+- **Responsive Dashboards** with dynamic charts
+- **Real-time data update**
 
-## 📋 Unterstützte Dateitypen
+## 📋 Supported file types
 
-### 🖼️ Bilder
-- **JPG/JPEG** - Standard-Bildformat
-- **PNG** - Verlustfreie Kompression
-- **GIF** - Animierte Bilder
-- **WebP** - Moderne Kompression
-- **ICO** - Favicon und Icons
+### 🖼️ Pictures
+- **JPG/JPEG** - Standard image format
+- **PNG** - Lossless compression
+- **GIF** - Animated images
+- **WebP** - Modern compression
+- **ICO** - Favicon and icons
 
-### 📄 Dokumente
+### 📄 Documents
 - **PDF** - Portable Document Format
-- **TXT** - Textdateien
+- **TXT** - text files
 - **DOC** - Microsoft Word (Legacy)
 - **DOCX** - Microsoft Word (Modern)
 
 ## 🔧 Installation
 
-### Automatische Installation (empfohlen)
-1. Öffnen Sie Ihre **PeerTube Admin-Oberfläche**
-2. Navigieren Sie zu **"Plugins & Themes"**
-3. Suchen Sie nach **"peertube-plugin-static-files"**
-4. Klicken Sie auf **"Installieren"**
+### Automatic installation (recommended)
+1. Open your **PeerTube admin interface**
+2. Navigate to **"Plugins & Themes"**
+3. Search for **"peertube-plugin-static-files"**
+4. Click **"Install"**
 
-### Manuelle Installation
+### Manual installation
 ```bash
 cd /var/www/peertube
 sudo -u peertube npm install peertube-plugin-static-files
@@ -57,380 +57,380 @@ npm install
 npm run build
 ```
 
-## ⚙️ Konfiguration
+## ⚙️ Configuration
 
-Nach der Installation navigieren Sie zu:
-**Admin → Plugins & Themes → peertube-plugin-static-files → Einstellungen**
+After installation, navigate to:
+**Admin → Plugins & Themes → peertube-plugin-static-files → Settings**
 
-### 🛠️ Verfügbare Einstellungen
+### 🛠️ Available settings
 
-| Einstellung | Beschreibung | Standard | Optionen |
+| Setting | Description | Default | Options |
 |-------------|--------------|----------|----------|
-| **Plugin aktivieren** | Master-Switch für das gesamte Plugin | ✅ Aktiviert | ☑️ / ☐ |
-| **Upload-Seiten-Pfad** | URL-Pfad für die Upload-Seite | `files/upload` | Beliebiger Pfad |
-| **Berechtigte Benutzer** | Komma-getrennte Liste spezifischer Benutzer | Leer (alle) | `user1,user2,user3` |
-| **Berechtigte Rollen** | Systemrollen mit Zugriff | Alle angemeldeten | Siehe unten |
-| **Erlaubte Dateitypen** | Upload-Beschränkungen | Alle | Bilder/Dokumente/Alle |
-| **Max. Dateigröße** | Upload-Limit in Megabytes | 50 MB | 1-100 MB |
+| **Activate plugin** | Master switch for the entire plugin | ✅ Enabled | ☑️ / ☐ |
+| **Upload Page Path** | URL path for the upload page | `files/upload` | Any path |
+| **Authorized Users** | Comma separated list of specific users | Empty (all) | `user1,user2,user3` |
+| **Eligible Roles** | System roles with access | All registered | See below |
+| **Allowed file types** | Upload Limits | All | Images/Documents/All |
+| **Max. File size** | Upload limit in megabytes | 50MB | 1-100MB |
 
-### 👥 Berechtigte Rollen
+### 👥 Eligible roles
 
-- **Alle angemeldeten Benutzer** *(Standard)*
-  - Jeder mit gültigem Account kann Dateien hochladen
-  - Benutzer sehen nur ihre eigenen Dateien
+- **All logged in users** *(Default)*
+  - Anyone with a valid account can upload files
+  - Users only see their own files
   
-- **Nur Administratoren**
-  - Maximale Sicherheit
-  - Vollzugriff auf alle Funktionen
+- **Administrators only**
+  - Maximum security
+  - Full access to all functions
   
-- **Administratoren und Moderatoren**
-  - Moderatoren erhalten Upload-Rechte
-  - Admins behalten alle Statistik-Funktionen
+- **Administrators and Moderators**
+  - Moderators receive upload rights
+  - Admins retain all statistics functions
 
-## 🎯 Verwendung
+## 🎯 Usage
 
-### 👤 Für Endbenutzer
+### 👤 For end users
 
-1. **Zugang zur Upload-Seite**
+1. **Access to the upload page**
    ```
    https://ihre-domain.de/p/files/upload
    ```
 
-2. **Datei-Upload-Prozess**
-   - Anmeldung (falls erforderlich)
-   - Drag & Drop oder Datei-Browser verwenden
-   - Upload-Fortschritt beobachten
-   - Links kopieren und teilen
+2. **File upload process**
+   - Registration (if required)
+   - Drag and drop or use file browser
+   - Monitor upload progress
+   - Copy and share links
 
-3. **Datei-Management**
-   - Eigene Dateien anzeigen
-   - Vorschau in neuem Tab
-   - Download-Funktion
-   - Löschung (nur eigene Dateien)
+3. **File Management**
+   - View my files
+   - Preview in new tab
+   - Download function
+   - Deletion (own files only)
 
-### 🔧 Für Administratoren
+### 🔧 For administrators
 
-#### 📁 Datei-Verwaltung
-**Zugang:** `/p/files/admin`
+#### 📁 File management
+**Access:** `/p/files/admin`
 
-- **Alle Dateien anzeigen** mit Metadaten
-- **Bulk-Operationen** für effiziente Verwaltung
-- **Aufräumen-Funktion** für verwaiste Dateien
-- **Benutzer-Zuordnung** und Upload-Zeitstempel
+- **Show all files** with metadata
+- **Bulk operations** for efficient management
+- **Cleanup function** for orphaned files
+- **User mapping** and upload timestamp
 
-#### 📊 Statistik-Dashboard
-**Zugang:** `/p/admin/stats`
+#### 📊 Statistics dashboard
+**Access:** `/p/admin/stats`
 
-- **Instance-Metriken**
-  - Gesamtzahl Benutzer & Videos (+ Monatszuwachs)
-  - **NEU:** Belegter Speicherplatz
-  - **NEU:** Engagement (Kommentare & Likes)
-  - Offene Meldungen/Beschwerden
+- **Instance Metrics**
+  - Total users & videos (+ monthly increase)
+  - **NEW:** Used storage space
+  - **NEW:** Engagement (Comments & Likes)
+  - Open reports/complaints
 
-- **Video-Analytics**
-  - **NEU:** Wiedergabezeit (Watch Time) Analyse
-  - **NEU:** Top-Listen (Videos & Kanäle)
-  - **NEU:** Interaktive Diagramme
-  - Flexible Zeitraumauswahl (Tag/Monat/Jahr)
+- **Video Analytics**
+  - **NEW:** Watch Time Analysis
+  - **NEW:** Top Lists (Videos & Channels)
+  - **NEW:** Interactive charts
+  - Flexible period selection (day/month/year)
 
-## 🔗 API-Endpunkte
+## 🔗 API endpoints
 
-### 🌐 Öffentliche Endpunkte
+### 🌐 Public endpoints
 ```http
 GET /plugins/static-files/router/file/:category/:filename
 ```
-- Direkte Datei-Auslieferung
-- Caching-Header für Performance
-- Content-Type Detection
+- Direct file delivery
+- Caching headers for performance
+- Content type detection
 
-### 🔐 Authentifizierte Endpunkte
+### 🔐 Authenticated endpoints
 
-#### Datei-Management
+#### File management
 ```http
-GET    /plugins/static-files/router/check-access      # Zugriff prüfen
-POST   /plugins/static-files/router/upload            # Datei hochladen  
-GET    /plugins/static-files/router/files             # Eigene Dateien
-DELETE /plugins/static-files/router/file/:category/:filename  # Datei löschen
+GET /plugins/static-files/router/check-access # Check access
+POST /plugins/static-files/router/upload # Upload file  
+GET /plugins/static-files/router/files # My files
+DELETE /plugins/static-files/router/file/:category/:filename # Delete file
 ```
 
-#### Admin-Funktionen
+#### Admin features
 ```http
-GET  /plugins/static-files/router/admin/files    # Alle Dateien auflisten
-POST /plugins/static-files/router/admin/cleanup  # Verwaiste Dateien aufräumen
-GET  /plugins/static-files/router/admin/stats    # Instance-Statistiken
+GET /plugins/static-files/router/admin/files # List all files
+POST /plugins/static-files/router/admin/cleanup # Clean up orphaned files
+GET /plugins/static-files/router/admin/stats # Instance statistics
 ```
 
-### 📝 API-Beispiele
+### 📝 API examples
 
-#### Upload mit cURL
+#### Upload with cURL
 ```bash
 curl -X POST \
   -H "Authorization: Bearer YOUR_TOKEN" \
-  -F "file=@beispiel.jpg" \
+  -F "file=@example.jpg" \
   https://ihre-domain.de/plugins/static-files/router/upload
 ```
 
-#### Statistiken abrufen
+#### Get statistics
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
   "https://ihre-domain.de/plugins/static-files/router/admin/stats?from=2024-01-01&to=2024-12-31&groupBy=month"
 ```
 
-## 🛠️ Entwicklung
+## 🛠️ Development
 
-### 📦 Voraussetzungen
+### 📦 Requirements
 - **Node.js** ≥ 16.0.0
 - **PeerTube** ≥ 5.2.0
-- **npm** oder **yarn**
+- **npm** or **yarn**
 
-### 🏗️ Development Setup
+### 🏗️ Development setup
 ```bash
-# Repository klonen
+# Clone repository
 git clone https://github.com/yarkolife/peertube-plugin-static-files.git
 cd peertube-plugin-static-files
 
-# Abhängigkeiten installieren
+# Install dependencies
 npm install
 
 # Development Build
 npm run build
 
-# Für Live-Entwicklung
+# For live development
 npm run dev
 ```
 
-### 📁 Projektstruktur
+### 📁 Project structure
 ```
 peertube-plugin-static-files/
 ├── assets/
-│   └── style.css              # UI-Styling
+│ └── style.css # UI styling
 ├── client/
-│   ├── client-plugin.js       # Haupt-Client-Code
-│   └── stats-page.js          # Statistik-Interface
+│ ├── client-plugin.js # Main client code
+│ └── stats-page.js # Statistics interface
 ├── routes/
-│   └── stats.js               # Statistik-API-Routen
-├── dist/                      # Gebaute Dateien
-├── public/uploads/            # Hochgeladene Dateien
-│   ├── images/                # Bilder-Kategorie
-│   └── documents/             # Dokument-Kategorie
-├── metadata/                  # Datei-Metadaten (JSON)
+│ └── stats.js # Statistics API routes
+├── dist/ # Built files
+├── public/uploads/ # Uploaded files
+│ ├── images/ # Images category
+│ └── documents/ # Document category
+├── metadata/ # File metadata (JSON)
 ├── scripts/
-│   └── build.js               # Build-Pipeline
-├── main.js                    # Server-seitiger Hauptcode
-├── package.json               # Projekt-Konfiguration
-└── README.md                  # Diese Dokumentation
+│ └── build.js # Build pipeline
+├── main.js # Server-side main code
+├── package.json # Project configuration
+└── README.md # This documentation
 ```
 
-### 🔄 Build-Prozess
+### 🔄 Build process
 ```bash
-# Vollständiger Build
+# Full build
 npm run build
 
-# Nur Client-Dateien
-node scripts/build.js
+# Client files only
+nodescripts/build.js
 
-# Entwicklung mit Auto-Reload  
+# Development with auto-reload  
 npm run dev
 ```
 
-## 🔒 Sicherheit & Best Practices
+## 🔒 Security & Best Practices
 
-### 🛡️ Sicherheitsmaßnahmen
-- **Strikte Dateityp-Validierung** auf Server- und Client-Seite
-- **Dateigrößen-Limits** konfigurierbar bis 100MB
-- **Benutzer-Autorisierung** bei jedem API-Aufruf
-- **Pfad-Sanitization** verhindert Directory Traversal
-- **MIME-Type-Prüfung** zusätzlich zur Dateiendung
+### 🛡️ Safety measures
+- **Strict file type validation** on server and client side
+- **File size limits** configurable up to 100MB
+- **User authorization** on every API call
+- **Path sanitization** prevents directory traversal
+- **MIME type check** in addition to the file extension
 
-### ⚡ Performance-Optimierungen
-- **Streaming File Upload** für große Dateien
-- **ETag & Cache-Control** Header für Browser-Caching
-- **Lazy Loading** in der Dateiliste
-- **Chunked Transfer** für Downloads
-- **Database Query Optimization** für Statistiken
+### ⚡ Performance optimizations
+- **Streaming File Upload** for large files
+- **ETag & Cache-Control** headers for browser caching
+- **Lazy loading** in the file list
+- **Chunked Transfer** for downloads
+- **Database Query Optimization** for statistics
 
 ### 📊 Monitoring & Logging
-- **Detaillierte Upload-Logs** mit Benutzer-Tracking
-- **Error Handling** mit aussagekräftigen Fehlermeldungen
-- **Performance Metriken** für Admin-Dashboard
-- **Audit Trail** für Admin-Aktionen
+- **Detailed upload logs** with user tracking
+- **Error Handling** with meaningful error messages
+- **Performance metrics** for admin dashboard
+- **Audit Trail** for admin actions
 
 ## 🐛 Troubleshooting
 
-### ❗ Häufige Probleme
+### ❗ Common problems
 
-#### Plugin lädt nicht
+#### Plugin doesn't load
 ```bash
-# PeerTube Logs prüfen
+# Check PeerTube logs
 journalctl -u peertube -f
 
-# Plugin-Status überprüfen
-sudo -u peertube npm list | grep static-files
+# Check plugin status
+sudo -u peertube npm list | grep static files
 
-# Dateiberechtigungen korrigieren
+# Fix file permissions
 sudo chown -R peertube:peertube /var/www/peertube/plugins/
 ```
 
-#### Upload schlägt fehl
-- ✅ **Dateigröße prüfen** (Standard: 50MB)
-- ✅ **Dateityp validieren** (siehe unterstützte Formate)
-- ✅ **Speicherplatz verfügbar** im uploads-Verzeichnis
-- ✅ **Nginx Upload-Limit** erhöhen falls nötig
+#### Upload fails
+- ✅ **Check file size** (default: 50MB)
+- ✅ **Validate file type** (see supported formats)
+- ✅ **Storage space available** in the uploads directory
+- ✅ Increase **Nginx upload limit** if necessary
 
-#### 403 Zugriffsverweigert
-- ✅ **Benutzer-Anmeldung** überprüfen
-- ✅ **Plugin-Einstellungen** kontrollieren
-- ✅ **Rollen-Konfiguration** validieren
+#### 403 Access denied
+- ✅ **Check user login**
+- ✅ Check **plugin settings**
+- ✅ Validate **role configuration**
 
-#### Statistiken laden nicht
-- ✅ **Admin/Moderator-Rechte** bestätigen
-- ✅ **Datenbank-Zugriff** testen
-- ✅ **API-Endpunkte** via Browser/cURL prüfen
+#### Statistics not loading
+- ✅ Confirm **admin/moderator rights**
+- ✅ Test **database access**
+- ✅ Check **API endpoints** via browser/cURL
 
-### 🔧 Debug-Modus aktivieren
+### 🔧 Enable debug mode
 ```javascript
-// In main.js temporär hinzufügen:
+// Add temporarily in main.js:
 ```
 console.log('DEBUG: Plugin loaded with settings:', settings);
 ```
 
 ## 📈 Changelog
 
-### v1.6.5 *(Aktuell)*
-- 🐛 **Fix:** NPM-Installation repariert (prepare-Skript entfernt)
+### v1.6.5 *(Current)*
+- 🐛 **Fix:** NPM installation fixed (prepare script removed)
 
 ### v1.6.4
-- 🐛 **Fix:** Korrektes Parsen der Kategorien aus der API (Objekt statt Array)
+- 🐛 **Fix:** Correct parsing of categories from the API (object instead of array)
 
 ### v1.6.3
-- ✅ **Verbessert:** Kategorien werden dynamisch über PeerTube API geladen
-- 🔧 **Fix:** Kompatibel mit peertube-plugin-categories
+- ✅ **Improved:** Categories are loaded dynamically via PeerTube API
+- 🔧 **Fix:** Compatible with peertube plugin categories
 
 ### v1.6.2
-- ✅ **Verbessert:** Kategorie-Namen angepasst (Kurzfilm, Heimatdoku, etc.)
+- ✅ **Improved:** Category names adjusted (short film, local documentary, etc.)
 
 ### v1.6.1
-- 🐛 **Fix:** renderRegionsCard Funktion fehlte
-- 🐛 **Fix:** Top Kanäle und Kategorien zeigten falsche View-Zahlen  
-- 🐛 **Fix:** Video-Counts waren inflationiert (jetzt COUNT DISTINCT)
-- ✅ **Verbessert:** Watch Time = tatsächliche Wiedergabezeit (nicht Video-Länge)
-- ✅ **Verbessert:** Views = einzelne View-Events (nicht aggregiert)
+- 🐛 **Fix:** renderRegionsCard function was missing
+- 🐛 **Fix:** Top channels and categories showed incorrect view numbers  
+- 🐛 **Fix:** Video counts were inflated (now COUNT DISTINCT)
+- ✅ **Improved:** Watch Time = actual playback time (not video length)
+- ✅ **Improved:** Views = individual view events (not aggregated)
 
 ### v1.6.0
-- 🏆 **Neu:** Top Kanäle Statistiken (Views, Watch Time, Video Count)
-- 🏷️ **Neu:** Top Kategorien Analyse
-- 📈 **Neu:** Schnell Wachsende Videos (7-Tage-Vergleich)
-- 📊 **Neu:** Channel Performance Dashboard
-- 🚀 **Neu:** Growth Tracking mit Prozent-Wachstum
+- 🏆 **New:** Top Channels Statistics (Views, Watch Time, Video Count)
+- 🏷️ **New:** Top categories analysis
+- 📈 **New:** Fast Growing Videos (7-Day Comparison)
+- 📊 **New:** Channel Performance Dashboard
+- 🚀 **New:** Growth tracking with percent growth
 
 ### v1.5.0
-- 🔥 **Neu:** Aktivitäts-Heatmap (Stunde × Wochentag)
-- 💡 **Neu:** Beste Veröffentlichungszeiten-Empfehlungen
-- 📊 **Neu:** Watch Time Perzentile (p25, p50, p75, p90, p95)
-- 📈 **Neu:** Retention Distribution Visualisierung
-- 🎯 **Neu:** Interaktive Heatmap mit Hover-Effekten
+- 🔥 **New:** Activity Heatmap (Hour × Weekday)
+- 💡 **New:** Best release times recommendations
+- 📊 **New:** Watch Time Percentiles (p25, p50, p75, p90, p95)
+- 📈 **New:** Retention Distribution Visualization
+- 🎯 **New:** Interactive heatmap with hover effects
 
 ### v1.4.1
-- 🗺️ **Neu:** Regional-Statistiken (Top Regionen mit Land und Views)
-- 📊 **Verbessert:** Detaillierte Aufschlüsselung nach subdivisionName + country
-- 👥 **Neu:** Unique Viewers pro Region
+- 🗺️ **New:** Regional statistics (top regions with country and views)
+- 📊 **Improved:** Detailed breakdown by subdivisionName + country
+- 👥 **New:** Unique Viewers per Region
 
 ### v1.4.0
-- ✨ **Neu:** DAU/WAU/MAU Metriken (Daily/Weekly/Monthly Active Users)
-- 📊 **Neu:** Retention Metriken (Durchschnittliche & Median Watch Time)
-- 📈 **Neu:** Time Series für Watch Time und Active Viewers
-- 🎨 **Neu:** Interaktiver Chart-Selector (Views / Watch Time / Active Viewers)
-- 🔧 **Verbessert:** Erweiterte Zeitreihen-Analysen
+- ✨ **New:** DAU/WAU/MAU metrics (Daily/Weekly/Monthly Active Users)
+- 📊 **New:** Retention Metrics (Average & Median Watch Time)
+- 📈 **New:** Time Series for Watch Time and Active Viewers
+- 🎨 **New:** Interactive chart selector (Views / Watch Time / Active Viewers)
+- 🔧 **Improved:** Advanced time series analysis
 
 ### v1.3.1
-- 🎨 **Neu:** Modernes Dashboard-Design mit dunklem Theme und voller Seitenbreite
-- ✨ **Verbessert:** Farbcodierte Metrik-Karten (Blau, Grün, Cyan, Orange, Lila, Pink)
-- 🔧 **Verbessert:** Responsives Grid-Layout und verbesserte Lesbarkeit
-- 💅 **Neu:** Animierte Hover-Effekte und moderne Typografie
+- 🎨 **New:** Modern dashboard design with dark theme and full page width
+- ✨ **Improved:** Color-coded metrics cards (Blue, Green, Cyan, Orange, Purple, Pink)
+- 🔧 **Improved:** Responsive grid layout and improved readability
+- 💅 **New:** Animated hover effects and modern typography
 
 ### v1.3.0
-- ✨ **Neu:** Detaillierte Zuschauer-Statistiken (Eindeutige Zuschauer, Länder, Geräte, Betriebssysteme, Browser)
-- 🔧 **Verbessert:** Erweiterte Nutzung der `localVideoViewer` Tabelle für präzise Daten
+- ✨ **New:** Detailed viewership statistics (unique viewers, countries, devices, operating systems, browsers)
+- 🔧 **Improved:** Extended use of `localVideoViewer` table for precise data
 
 ### v1.2.9
-- ✨ **Neu:** Exakte Berechnung der Wiedergabezeit (basierend auf `localVideoViewer`)
-- 🔧 **Verbessert:** Fallback auf Schätzung, falls keine detaillierten Daten verfügbar sind
-- 🗑️ **Entfernt:** Debug-Route
+- ✨ **New:** Exact playback time calculation (based on `localVideoViewer`)
+- 🔧 **Improved:** Fallback to estimate if detailed data is not available
+- 🗑️ **Removed:** Debug route
 
 ### v1.2.8
-- 🔧 **Debug:** Temporäre Route zur Schema-Analyse hinzugefügt (für exakte Watch-Time)
-- ✨ **Neu:** Unterstützung für SVG-Dateien beim Upload
-- 🔧 **Verbessert:** Videotitel in Statistiken sind jetzt vollständig lesbar und verlinkt
+- 🔧 **Debug:** Added temporary route to schema analysis (for exact watch time)
+- ✨ **New:** Support for SVG files when uploading
+- 🔧 **Improved:** Video titles in stats are now fully readable and linked
 
 ### v1.2.7
-- ✨ **Neu:** Unterstützung für SVG-Dateien beim Upload
-- 🔧 **Verbessert:** Videotitel in Statistiken sind jetzt vollständig lesbar und verlinkt
+- ✨ **New:** Support for SVG files when uploading
+- 🔧 **Improved:** Video titles in stats are now fully readable and linked
 
 ### v1.2.6
-- 🔧 **Verbessert:** Videotitel in Statistiken sind jetzt vollständig lesbar und verlinkt
-- ℹ️ **Info:** Klarstellung zur Berechnung der Wiedergabezeit (Schätzung)
+- 🔧 **Improved:** Video titles in stats are now fully readable and linked
+- ℹ️ **Info:** Clarification on Calculating Playback Time (Estimate)
 
 ### v1.2.5
-- 🐛 **Behoben:** Fehlende Statistik-Features im Frontend (Build-Prozess korrigiert)
-- 🔧 **Verbessert:** Integration der Statistik-Seite
+- 🐛 **Fixed:** Missing statistics features in the frontend (build process corrected)
+- 🔧 **Improved:** Integration of the statistics page
 
 ### v1.2.4
-- 🐛 **Behoben:** HTTP 500 Fehler auf der Statistik-Seite (Fehlerbehandlung verbessert)
-- 🔧 **Verbessert:** Robustere Berechnung der Wiedergabezeit
+- 🐛 **Fixed:** HTTP 500 error on statistics page (error handling improved)
+- 🔧 **Improved:** More robust playback time calculation
 
 ### v1.2.3
-- ✨ **NEU:** Erweiterte Statistiken (Speicherplatz, Engagement, Wiedergabezeit)
-- ✨ **NEU:** Top-Listen für Videos und Kanäle
-- ✨ **NEU:** Dynamische Diagramme für Views-Verlauf
-- 🐛 **Behoben:** Pfad-Probleme beim Datei-Upload (Persistente Speicherung)
-- 🔧 **Verbessert:** Performance der Datenbank-Abfragen
+- ✨ **NEW:** Advanced stats (disk space, engagement, watch time)
+- ✨ **NEW:** Top lists for videos and channels
+- ✨ **NEW:** Dynamic charts for views history
+- 🐛 **Fixed:** Path problems when uploading files (persistent storage)
+- 🔧 **Improved:** Performance of database queries
 
 ### v1.2.0
-- ✨ **NEU:** Basis Administrator-Statistiken
-- ✨ **NEU:** Video-Analytics mit flexibler Gruppierung  
-- ✨ **NEU:** ICO-Datei Unterstützung
-- 🔧 **Verbessert:** Modulare Architektur mit separaten Routen
-- 🔧 **Verbessert:** Enhanced Error Handling
-- 🐛 **Behoben:** ES Module Export-Probleme
+- ✨ **NEW:** Basic admin stats
+- ✨ **NEW:** Video analytics with flexible grouping  
+- ✨ **NEW:** ICO file support
+- 🔧 **Improved:** Modular architecture with separate routes
+- 🔧 **Improved:** Enhanced error handling
+- 🐛 **Fixed:** ES Module export issues
 
 ### v1.1.4
-- 🔧 **Verbessert:** Datei-Metadaten System
-- 🔧 **Verbessert:** Admin-Interface Überarbeitung
-- 🐛 **Behoben:** Upload-Fehlerbehandlung
+- 🔧 **Improved:** File metadata system
+- 🔧 **Improved:** Admin interface overhaul
+- 🐛 **Fixed:** Upload error handling
 
 ### v1.1.0
-- ✨ Drag & Drop Upload-Interface
-- ✨ Flexible Benutzerrechte-Verwaltung
-- 🔧 Responsive Design
+- ✨ Drag & Drop upload interface
+- ✨ Flexible user rights management
+- 🔧 Responsive design
 
-## 🤝 Beitragen
+## 🤝 Contribute
 
-Wir freuen uns über Beiträge zur Weiterentwicklung des Plugins!
+We look forward to your contributions to the further development of the plugin!
 
 ### 🔄 Contribution Workflow
-1. **Fork** des Repositories erstellen
-2. **Feature-Branch** erstellen (`git checkout -b feature/amazing-feature`)
-3. **Änderungen committen** (`git commit -m 'Add amazing feature'`)
-4. **Branch pushen** (`git push origin feature/amazing-feature`)
-5. **Pull Request** erstellen
+1. Create a **fork** of the repository
+2. Create **feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Commit changes** (`git commit -m 'Add amazing feature'`)
+4. **Branch push** (`git push origin feature/amazing-feature`)
+5. Create **Pull Request**
 
 ### 🐛 Bug Reports
-Bitte verwenden Sie die **GitHub Issues** mit folgenden Informationen:
-- PeerTube Version
-- Plugin Version  
-- Detaillierte Fehlerbeschreibung
-- Schritte zur Reproduktion
-- Browser/OS Information
+Please use the **GitHub Issues** with the following information:
+- PeerTube version
+- Plugin version  
+- Detailed error description
+- Reproduction steps
+- Browser/OS information
 
 ### 💡 Feature Requests
-Beschreiben Sie neue Funktionswünsche mit:
-- Use Case und Motivation
-- Erwartetes Verhalten
-- Mögliche Implementierungsansätze
+Describe new feature requests with:
+- Use case and motivation
+- Expected behavior
+- Possible implementation approaches
 
-## 📄 Lizenz
+## 📄 License
 
-Dieses Plugin ist unter der **AGPL-3.0** Lizenz veröffentlicht.
+This plugin is released under the **AGPL-3.0** license.
 
 ```
 PeerTube Static Files & Admin Stats Plugin
@@ -442,29 +442,29 @@ by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 ```
 
-Vollständige Lizenz-Details finden Sie in der [LICENSE](LICENSE) Datei.
+Full license details can be found in the [LICENSE](LICENSE) file.
 
 ## 🙋‍♂️ Support & Community
 
-### 📞 Support-Kanäle
+### 📞 Support Channels
 - **GitHub Issues**: [Bug Reports & Feature Requests](https://github.com/yarkolife/peertube-plugin-static-files/issues)
 - **GitHub Discussions**: [Community Forum](https://github.com/yarkolife/peertube-plugin-static-files/discussions)
-- **PeerTube Forum**: [Plugin-spezifische Diskussionen](https://framatalk.org/c/peertube)
+- **PeerTube Forum**: [Plugin specific discussions](https://framatalk.org/c/peertube)
 
-### 🌟 Mitwirkende
-- **[yarkolife](https://github.com/yarkolife)** - Hauptentwickler & Maintainer
-- **Community Contributors** - Siehe [Contributors](https://github.com/yarkolife/peertube-plugin-static-files/graphs/contributors)
+### 🌟 Contributors
+- **[yarkolife](https://github.com/yarkolife)** - Lead developer & maintainer
+- **Community Contributors** - See [Contributors](https://github.com/yarkolife/peertube-plugin-static-files/graphs/contributors)
 
-### 💖 Sponsoring
-Wenn dieses Plugin für Sie nützlich ist, können Sie die Entwicklung unterstützen:
-- ⭐ **GitHub Star** vergeben
-- 🍻 **Buy me a coffee** (Link folgt)
-- 💼 **Enterprise Support** anfragen
-
----
-
-**📌 Hinweis**: Dieses Plugin befindet sich in aktiver Entwicklung. Regelmäßige Updates bringen neue Features und Verbesserungen. Feedback und Verbesserungsvorschläge sind jederzeit willkommen!
+### 💖 Sponsorship
+If this plugin is useful to you, you can support the development:
+- ⭐ **GitHub Star** awarded
+- 🍻 **Buy me a coffee** (link follows)
+- 💼 Request **Enterprise Support**
 
 ---
 
-*Entwickelt mit ❤️ für die PeerTube Community*
+**📌 Note**: This plugin is under active development. Regular updates bring new features and improvements. Feedback and suggestions for improvement are always welcome!
+
+---
+
+*Developed with ❤️ for the PeerTube Community*

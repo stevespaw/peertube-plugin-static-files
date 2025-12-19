@@ -1,16 +1,16 @@
 /* Static Files Plugin Styles - Scoped to Plugin Elements Only */
 
-/* Ограничиваем стили только элементами плагина */
+/* Limit styles to plugin elements only */
 .static-files-container,
 .static-files-footer-section,
 .static-files-fixed-footer,
 .static-files-menu-section {
-  /* Наследуем цвета от темы PeerTube */
+  /* Inheriting colors from the PeerTube theme */
   color: inherit;
   background: inherit;
 }
 
-/* Upload Drop Zone - только для плагина */
+/* Upload Drop Zone - only for plugin */
 .upload-drop-zone {
   border: 2px dashed #ddd;
   border-radius: 0.75rem;
@@ -29,7 +29,7 @@
   transform: scale(1.01);
 }
 
-/* File Items - только для плагина */
+/* File Items - only for plugin*/
 .file-item {
   background: transparent;
   border: 1px solid rgba(0, 0, 0, 0.125);
@@ -79,7 +79,7 @@
   border: 1px solid #ffeaa7;
 }
 
-/* Buttons - только outline стили для совместимости */
+/* Buttons - only outline styles for compatibility */
 .file-actions .btn {
   transition: all 0.2s ease;
 }
@@ -163,7 +163,7 @@
   color: inherit;
 }
 
-/* Footer Section - ограниченные стили */
+/* Footer Section - limited styles */
 .static-files-footer-section {
   background: linear-gradient(135deg, #007bff 0%, #6f42c1 100%);
   color: white;
@@ -421,7 +421,7 @@
   }
 }
 
-/* Темная тема - только для элементов плагина */
+/* Dark theme - only for plugin elements */
 @media (prefers-color-scheme: dark) {
   .upload-drop-zone {
     border-color: #6c757d;

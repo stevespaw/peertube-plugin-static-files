@@ -43,7 +43,7 @@ async function register({
 }) {
   const logger = peertubeHelpers.logger
 
-  logger.info('🚀 Static Files Plugin wird registriert...')
+  logger.info('🚀 Static Files Plugin is being registered...')
 
   const dataDir = peertubeHelpers.plugin.getDataDirectoryPath()
   const metadataPath = path.join(dataDir, 'metadata')
@@ -56,32 +56,32 @@ async function register({
   try {
     if (!fs.existsSync(uploadsPath)) {
       fs.mkdirSync(uploadsPath, { recursive: true })
-      logger.info('📁 Uploads-Verzeichnis erstellt')
+      logger.info('📁 Uploads directory created')
     }
     if (!fs.existsSync(imagesPath)) {
       fs.mkdirSync(imagesPath, { recursive: true })
-      logger.info('📁 Images-Verzeichnis erstellt')
+      logger.info('📁 Images directory created')
     }
     if (!fs.existsSync(documentsPath)) {
       fs.mkdirSync(documentsPath, { recursive: true })
-      logger.info('📁 Documents-Verzeichnis erstellt')
+      logger.info('📁 Documents directory created')
     }
     if (!fs.existsSync(metadataPath)) {
       fs.mkdirSync(metadataPath, { recursive: true })
-      logger.info('📁 Metadata-Verzeichnis erstellt')
+      logger.info('📁 Metadata directory created')
     }
   } catch (error) {
-    logger.error('Fehler beim Erstellen der Verzeichnisse:', error)
+    logger.error('Error creating the directories:', error)
   }
 
   async function saveFileMetadata(filename, metadata) {
     try {
       const metadataFile = path.join(metadataPath, `${filename}.json`)
       fs.writeFileSync(metadataFile, JSON.stringify(metadata, null, 2))
-      console.log(`🗃️ Метаданные сохранены в файл: ${metadataFile}`)
+      console.log(`🗃️ The metadata has been saved to a file.: ${metadataFile}`)
       return true
     } catch (error) {
-      console.error(`🗃️ Ошибка сохранения метаданных для ${filename}:`, error)
+      console.error(`🗃️ Error saving metadata for ${filename}:`, error)
       return false
     }
   }
@@ -95,46 +95,46 @@ async function register({
       }
       return null
     } catch (error) {
-      console.error(`🗃️ Ошибка загрузки метаданных для ${filename}:`, error)
+      console.error(`🗃️ Error loading metadata for ${filename}:`, error)
       return null
     }
   }
 
-  // Регистрируем настройки для админ-панели
+  // Registering settings for the admin panel.
   registerSetting({
     name: 'enable-plugin',
-    label: 'Plugin aktivieren',
+    label: 'Activate plugin',
     type: 'input-checkbox',
     default: true,
     private: false,
-    descriptionHTML: 'Aktiviert oder deaktiviert das gesamte Plugin'
+    descriptionHTML: 'Enables or disables the entire plugin.'
   })
 
   registerSetting({
     name: 'page-path',
-    label: 'Pfad zur Upload-Seite (ohne /)',
+    label: 'Path to the upload page (without /)',
     type: 'input',
     default: 'files/upload',
-    descriptionHTML: 'Die Seite wird unter https://ihre-domain.de/p/{pfad} verfügbar sein',
+    descriptionHTML: 'The page will be available at https://your-domain.com/p/{path},
     private: false
   })
 
   registerSetting({
     name: 'allowed-users',
-    label: 'Berechtigte Benutzer (durch Komma getrennt)',
+    label: 'Authorized users (separated by commas)',
     type: 'input-textarea',
     default: '',
-    descriptionHTML: 'Benutzernamen durch Komma getrennt. Leer = alle angemeldeten Benutzer haben Zugriff',
+    descriptionHTML: 'Usernames separated by commas. Leave blank = all logged-in users have access.',
     private: false
   })
 
   registerSetting({
     name: 'allowed-roles',
-    label: 'Berechtigte Rollen',
+    label: 'Authorized roles',
     type: 'select',
     options: [
-      { label: 'Alle angemeldeten Benutzer', value: 'all' },
-      { label: 'Nur Administratoren', value: 'admin' },
+      { label: 'All registered users', value: 'all' },
+      { label: 'Only administrators', value: 'admin' },
       { label: 'Administratoren und Moderatoren', value: 'admin-mod' }
     ],
     default: 'all',
@@ -143,12 +143,12 @@ async function register({
 
   registerSetting({
     name: 'allowed-file-types',
-    label: 'Erlaubte Dateitypen',
+    label: 'Allowed file types',
     type: 'select',
     options: [
-      { label: 'Alle (Bilder + Dokumente)', value: 'all' },
-      { label: 'Nur Bilder (JPG, PNG, GIF, WebP)', value: 'images' },
-      { label: 'Nur Dokumente (PDF, TXT, DOC, DOCX)', value: 'documents' }
+      { label: 'All (images + documents)', value: 'all' },
+      { label: 'Images only (JPG, PNG, GIF, WebP)', value: 'images' },
+      { label: 'Only Documents (PDF, TXT, DOC, DOCX)', value: 'documents' }
     ],
     default: 'all',
     private: false
@@ -156,60 +156,60 @@ async function register({
 
   registerSetting({
     name: 'max-file-size',
-    label: 'Maximale Dateigröße (MB)',
+    label: 'Maximum file size (MB)',
     type: 'input',
     default: '50',
-    descriptionHTML: 'Maximale Größe pro Datei in Megabytes',
+    descriptionHTML: 'Maximum file size in megabytes',
     private: false
   })
 
-  // УПРОЩЕННАЯ АДМИН-НАСТРОЙКА - ПРОСТО ССЫЛКА НА ОТДЕЛЬНУЮ СТРАНИЦУ
+  // SIMPLIFIED ADMIN SETUP - SIMPLY A LINK TO A SEPARATE PAGE
   registerSetting({
     name: 'admin-interface-link',
-    label: 'Dateiverwaltung',
+    label: 'File management',
     type: 'html',
     html: `
       <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center;">
-        <h4 style="margin: 0 0 15px 0;">📁 Datei-Verwaltung</h4>
-        <p style="margin: 0 0 20px 0;">Verwalten Sie alle hochgeladenen Dateien in einer separaten Admin-Oberfläche.</p>
+        <h4 style="margin: 0 0 15px 0;">📁 File management</h4>
+        <p style="margin: 0 0 20px 0;">Manage all uploaded files in a separate admin interface.</p>
         <a href="/p/files/admin" target="_blank" 
            style="background: white; color: #667eea; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
-          🚀 Zur Dateiverwaltung
+          🚀 For file management
         </a>
         <p style="margin: 15px 0 0 0; font-size: 0.9em; opacity: 0.9;">
-          <strong>Hinweis:</strong> Diese Seite öffnet sich in einem neuen Tab und zeigt alle Dateien, Statistiken und Verwaltungsoptionen.
+          <strong>A notice:</strong> This page opens in a new tab and displays all files, statistics, and administrative options.
         </p>
       </div>
       
       <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #17a2b8;">
-        <h5 style="color: #17a2b8; margin: 0 0 10px 0;">ℹ️ Funktionen der Dateiverwaltung:</h5>
+        <h5 style="color: #17a2b8; margin: 0 0 10px 0;">ℹ️ File management functions:</h5>
         <ul style="margin: 0; padding-left: 20px;">
-          <li><strong>📊 Statistiken:</strong> Übersicht über alle Dateien, Größen und Metadaten</li>
-          <li><strong>🗂️ Dateien anzeigen:</strong> Alle hochgeladenen Dateien mit Details</li>
-          <li><strong>🗑️ Dateien löschen:</strong> Einzelne Dateien oder Masse-Operationen</li>
-          <li><strong>🧹 Aufräumen:</strong> Automatisches Entfernen verwaister Dateien</li>
-          <li><strong>🔍 Vorschau:</strong> Dateien direkt im Browser betrachten</li>
+          <li><strong>📊 Statistics:</strong> Overview of all files, sizes, and metadata</li>
+          <li><strong>🗂️ Show files:</strong> All uploaded files with details</li>
+          <li><strong>🗑️ Delete files:</strong> Individual files or batch operations</li>
+          <li><strong>🧹 Clean up:</strong> Automatic removal of orphaned files</li>
+          <li><strong>🔍 Preview:</strong> View files directly in your browser.</li>
         </ul>
       </div>
 
       <div style="margin-top: 15px; padding: 12px; background: #fff3cd; border-radius: 6px; border-left: 4px solid #ffc107;">
         <p style="margin: 0; color: #856404;">
-          <strong>💡 Tipp:</strong> Die Berechtigung für die Dateiverwaltung richtet sich nach den oben konfigurierten 
-          <em>"Berechtigte Benutzer"</em> und <em>"Berechtigte Rollen"</em> Einstellungen.
+          <strong>💡 Tip:</strong> The permissions for file management are determined by the settings configured above.
+          <em>"Authorized users"</em> und <em>"Authorized roles"</em> Einstellungen.
         </p>
       </div>
     `,
     private: false
   });
 
-  // Получаем роутер
+  // We are receiving the router.
   const router = getRouter()
 
-  // Инициализируем статистики
+  // Initial statistics
   const statsRoutes = new StatsRoutes(peertubeHelpers, settingsManager);
   statsRoutes.registerRoutes(router);
 
-  // Настраиваем Multer
+  // Configuring Multer
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       const isImage = file.mimetype.startsWith('image/')
@@ -246,7 +246,7 @@ async function register({
     if (allowedImageTypes.includes(file.mimetype) || allowedDocTypes.includes(file.mimetype)) {
       cb(null, true)
     } else {
-      cb(new Error('Dateityp nicht erlaubt. Erlaubte Typen: JPG, PNG, GIF, WebP, ICO, SVG, PDF, TXT, DOC, DOCX'), false)
+      cb(new Error('File type not allowed. Allowed types: JPG, PNG, GIF, WebP, ICO, SVG, PDF, TXT, DOC, DOCX'), false)
     }
   }
 
@@ -259,7 +259,7 @@ async function register({
     fileFilter: fileFilter
   })
 
-  // Middleware для проверки прав доступа
+  // Middleware for checking access rights
   async function checkUserAccess(req, res, next) {
     try {
       console.log('🔧 checkUserAccess called for:', req.method, req.path)
@@ -283,7 +283,7 @@ async function register({
 
       if (!user) {
         console.log('🔧 No user found')
-        return res.status(401).json({ error: 'Authentifizierung erforderlich' })
+        return res.status(401).json({ error: 'Authentication required' })
       }
 
       const settings = await settingsManager.getSettings([
@@ -295,27 +295,27 @@ async function register({
       ])
 
       if (!settings['enable-plugin']) {
-        return res.status(403).json({ error: 'Plugin ist deaktiviert' })
+        return res.status(403).json({ error: 'The plugin is disabled.' })
       }
 
-      // Проверяем роли
+      // Checking roles
       const allowedRoles = settings['allowed-roles'] || 'all'
       const userRole = user.role // 0 = Admin, 1 = Moderator, 2 = User
 
       if (allowedRoles === 'admin' && userRole !== 0) {
-        return res.status(403).json({ error: 'Nur für Administratoren' })
+        return res.status(403).json({ error: 'For administrators only' })
       }
 
       if (allowedRoles === 'admin-mod' && userRole > 1) {
-        return res.status(403).json({ error: 'Nur für Administratoren und Moderatoren' })
+        return res.status(403).json({ error: 'For administrators and moderators only.' })
       }
 
-      // Проверяем конкретных пользователей
+      // We are checking specific users.
       const allowedUsers = settings['allowed-users']
       if (allowedUsers && allowedUsers.trim()) {
         const userList = allowedUsers.split(',').map(u => u.trim()).filter(u => u)
         if (userList.length > 0 && !userList.includes(user.username)) {
-          return res.status(403).json({ error: 'Benutzer nicht berechtigt' })
+          return res.status(403).json({ error: 'User not authorized' })
         }
       }
 
@@ -325,7 +325,7 @@ async function register({
     } catch (error) {
       console.error('🔧 Critical error in checkUserAccess:', error)
       res.status(500).json({
-        error: 'Serverfehler bei Zugriffsprüfung',
+        error: 'Server error during access verification.',
         debug: {
           message: error.message,
           stack: error.stack
@@ -334,7 +334,7 @@ async function register({
     }
   }
 
-  // Middleware только для админов
+  // Middleware for administrators only.
   async function checkAdminAccess(req, res, next) {
     try {
       console.log('🔧 Admin access check')
@@ -347,40 +347,40 @@ async function register({
       } catch (authError) {
         console.log('🔧 Admin getAuthUser failed:', authError.message)
         return res.status(401).json({
-          error: 'Admin-Authentifizierung erforderlich',
+          error: 'Administrator authentication required',
           debug: { authError: authError.message }
         })
       }
 
-      // Дополнительно проверяем конкретных пользователей из настроек
+      // We are also checking specific users from the settings.
       const settings = await settingsManager.getSettings(['allowed-users', 'allowed-roles'])
       const allowedRoles = settings['allowed-roles'] || 'all'
 
-      // Если пользователь не найден, пробуем альтернативные проверки
+      // If the user is not found, we try alternative verification methods.
       if (!user) {
         return res.status(403).json({
-          error: 'Nur für berechtigte Benutzer',
+          error: 'For authorized users only.',
           debug: { hasUser: false }
         })
       }
 
-      // Проверяем права доступа по ролям
+      // We are checking access rights based on roles.
       const userRole = user.role // 0 = Admin, 1 = Moderator, 2 = User
 
       if (allowedRoles === 'admin' && userRole !== 0) {
-        return res.status(403).json({ error: 'Nur für Administratoren' })
+        return res.status(403).json({ error: 'For administrators only' })
       }
 
       if (allowedRoles === 'admin-mod' && userRole > 1) {
-        return res.status(403).json({ error: 'Nur für Administratoren und Moderatoren' })
+        return res.status(403).json({ error: 'For administrators and moderators only.' })
       }
 
-      // Проверяем конкретных пользователей
+      // We are checking specific users.
       const allowedUsers = settings['allowed-users']
       if (allowedUsers && allowedUsers.trim()) {
         const userList = allowedUsers.split(',').map(u => u.trim()).filter(u => u)
         if (userList.length > 0 && !userList.includes(user.username)) {
-          return res.status(403).json({ error: 'Benutzer nicht berechtigt für Admin-Funktionen' })
+          return res.status(403).json({ error: 'User not authorized for admin functions.' })
         }
       }
 
@@ -390,15 +390,15 @@ async function register({
     } catch (error) {
       console.error('🔧 Error in admin access check:', error)
       res.status(500).json({
-        error: 'Serverfehler bei Admin-Zugriffsprüfung',
+        error: 'Server error during admin access check.',
         debug: error.message
       })
     }
   }
 
-  // ВАЖНО: Регистрируем все роуты
+  // IMPORTANT: We are registering all routes.
 
-  // API-Route для проверки доступа (для клиента)
+  // API route for access verification (for the client)
   router.get('/check-access', checkUserAccess, async (req, res) => {
     try {
       res.json({
@@ -406,7 +406,7 @@ async function register({
         user: {
           username: req.user.username,
           role: req.user.role,
-          roleText: req.user.role === 0 ? 'Administrator' : req.user.role === 1 ? 'Moderator' : 'Benutzer'
+          roleText: req.user.role === 0 ? 'Administrator' : req.user.role === 1 ? 'Moderator' : 'User'
         },
         settings: {
           allowedFileTypes: req.settings['allowed-file-types'] || 'all',
@@ -415,8 +415,8 @@ async function register({
         }
       })
     } catch (error) {
-      logger.error('Fehler bei check-access:', error)
-      res.status(500).json({ error: 'Serverfehler' })
+      logger.error('Error during access check:', error)
+      res.status(500).json({ error: 'Server error' })
     }
   })
 
@@ -430,7 +430,7 @@ async function register({
       storage: storage,
       limits: {
         fileSize: maxFileSize,
-        fieldSize: maxFileSize // Добавляем лимит на поле формы
+        fieldSize: maxFileSize // Add a limit to the form field
       },
       fileFilter: fileFilter
     }).single('file')
@@ -442,7 +442,7 @@ async function register({
 
           if (err.code === 'LIMIT_FILE_SIZE') {
             return res.status(413).json({
-              error: `Datei zu groß. Maximum: ${req.settings['max-file-size']}MB`,
+              error: `File too large. Maximum: ${req.settings['max-file-size']}MB`,
               maxSize: req.settings['max-file-size'],
               errorCode: 'FILE_TOO_LARGE'
             })
@@ -450,7 +450,7 @@ async function register({
 
           if (err.code === 'LIMIT_FIELD_VALUE') {
             return res.status(413).json({
-              error: `Datei zu groß. Maximum: ${req.settings['max-file-size']}MB`,
+              error: `File/Field too large. Maximum: ${req.settings['max-file-size']}MB`,
               maxSize: req.settings['max-file-size'],
               errorCode: 'FIELD_TOO_LARGE'
             })
@@ -463,7 +463,7 @@ async function register({
         }
 
         if (!req.file) {
-          return res.status(400).json({ error: 'Keine Datei hochgeladen' })
+          return res.status(400).json({ error: 'No file uploaded' })
         }
 
         console.log('🔧 File uploaded successfully:', req.file.filename, 'size:', req.file.size, 'bytes')
@@ -473,12 +473,12 @@ async function register({
 
         if (allowedTypes === 'images' && !isImage) {
           fs.unlinkSync(req.file.path)
-          return res.status(400).json({ error: 'Nur Bilder sind erlaubt' })
+          return res.status(400).json({ error: 'Only pictures are allowed.' })
         }
 
         if (allowedTypes === 'documents' && isImage) {
           fs.unlinkSync(req.file.path)
-          return res.status(400).json({ error: 'Nur Dokumente sind erlaubt' })
+          return res.status(400).json({ error: 'Only documents are allowed.' })
         }
 
         const category = isImage ? 'images' : 'documents'
@@ -487,7 +487,7 @@ async function register({
         const fileInfo = {
           filename: req.file.filename,
           originalname: req.file.originalname,
-          uploadedBy: req.user?.username || 'Unbekannt',
+          uploadedBy: req.user?.username || 'Unknown',
           uploadDate: new Date().toISOString(),
           category: category,
           size: req.file.size,
@@ -495,46 +495,46 @@ async function register({
           url: fileUrl
         }
 
-        console.log('🧪 Сохраняемые метаданные файла:', fileInfo)
+        console.log('🧪 The following file metadata is preserved:', fileInfo)
 
         try {
-          // Используем файловое хранение вместо storageManager
+          // We are using file storage instead of storageManager.
           const saved = await saveFileMetadata(req.file.filename, fileInfo)
 
           if (saved) {
-            // Проверяем, что данные сохранились
+            // We are checking that the data has been saved.
             const verification = await loadFileMetadata(req.file.filename)
             if (verification && verification.filename === req.file.filename) {
-              console.log('🧪 Метаданные успешно сохранены и верифицированы (файловое хранение)')
+              console.log('🧪 Metadata has been successfully saved and verified (file storage).')
             } else {
-              console.error('🧪 Верификация метаданных не удалась (файловое хранение)')
+              console.error('🧪 Metadata verification failed (file storage)')
             }
           } else {
-            console.error('🧪 Не удалось сохранить метаданные (файловое хранение)')
+            console.error('🧪 Failed to save metadata (file storage)')
           }
 
-          // Дублируем в storageManager для совместимости
+          // We are duplicating this in storageManager for compatibility.
           try {
             await storageManager.storeData(`file_${req.file.filename}`, fileInfo)
-            console.log('🧪 Метаданные также сохранены в storageManager')
+            console.log('🧪 The metadata is also stored in the storageManager.')
           } catch (storageError) {
-            console.error('🧪 Ошибка storageManager (не критично):', storageError.message)
+            console.error('🧪 StorageManager error (not critical):', storageError.message)
           }
 
         } catch (error) {
-          console.error('🧪 Критическая ошибка сохранения метаданных:', error)
+          console.error('🧪 Critical error saving metadata:', error)
         }
 
         res.json({
           success: true,
-          message: 'Datei erfolgreich hochgeladen',
+          message: 'File uploaded successfully',
           file: fileInfo
         })
 
-        logger.info(`Datei hochgeladen: ${req.file.originalname} (${req.file.size} bytes) von ${req.user.username}`)
+        logger.info(`File uploaded: ${req.file.originalname} (${req.file.size} bytes) from ${req.user.username}`)
       } catch (error) {
-        logger.error('Fehler beim Datei-Upload:', error)
-        res.status(500).json({ error: 'Fehler beim Hochladen der Datei' })
+        logger.error('Error during file upload:', error)
+        res.status(500).json({ error: 'Error uploading the file.' })
       }
     })
   })
@@ -554,11 +554,11 @@ async function register({
 
           let fileInfo = {}
           try {
-            // Сначала пробуем файловое хранение
+            // First, we'll try file-based storage.
             fileInfo = await loadFileMetadata(filename)
 
             if (fileInfo && Object.keys(fileInfo).length > 0) {
-              console.log(`🗃️ Загружены метаданные из файла для ${filename}`)
+              console.log(`🗃️ Metadata has been loaded from the file for ${filename}`)
             } else {
               // Если файлового хранения нет, пробуем storageManager
               try {
@@ -567,24 +567,24 @@ async function register({
                   const data = await storageManager.getData(key)
                   if (data && typeof data === 'object') {
                     fileInfo = data
-                    console.log(`🧪 Загружены метаданные из storageManager для ${filename} по ключу ${key}`)
+                    console.log(`🧪 Metadata has been loaded from storageManager for ${filename} by key ${key}`)
                     break
                   }
                 }
               } catch (e) {
-                console.log(`🧪 StorageManager недоступен для ${filename}`)
+                console.log(`🧪 StorageManager is not available for ${filename}`)
               }
 
               if (!fileInfo || Object.keys(fileInfo).length === 0) {
-                console.log(`🗃️ Метаданные не найдены для ${filename}, используем данные файловой системы`)
+                console.log(`🗃️ No metadata found for ${filename}, We use file system data.`)
               }
             }
           } catch (e) {
-            console.error(`🗃️ Ошибка загрузки метаданных для ${filename}:`, e)
+            console.error(`🗃️ Error loading metadata for ${filename}:`, e)
           }
 
-          // Определяем автора файла
-          let uploadedBy = 'Unbekannt'
+          // We are determining the author of the file.
+          let uploadedBy = 'Unknown'
           if (fileInfo.uploadedBy) {
             uploadedBy = fileInfo.uploadedBy
           } else if (fileInfo.username) {
@@ -615,12 +615,12 @@ async function register({
         totalSize: files.reduce((sum, file) => sum + file.size, 0)
       })
     } catch (error) {
-      logger.error('Fehler beim Laden der Dateien:', error)
-      res.status(500).json({ error: 'Fehler beim Laden der Dateien' })
+      logger.error('Error loading the files:', error)
+      res.status(500).json({ error: 'Error loading the files.' })
     }
   })
 
-  // Admin-Route для всех файлов (используем checkUserAccess вместо checkAdminAccess)
+  // Admin route for all files (using checkUserAccess instead of checkAdminAccess)
   router.get('/admin/files', checkUserAccess, async (req, res) => {
     try {
       const files = []
@@ -635,19 +635,19 @@ async function register({
 
           let fileInfo = {}
           try {
-            // Сначала пробуем файловое хранение
+            // First, we'll try file-based storage.
             fileInfo = await loadFileMetadata(filename)
 
             if (!fileInfo || Object.keys(fileInfo).length === 0) {
-              // Если файлового хранения нет, пробуем storageManager
+              // If file storage is not available, we try storageManager.
               try {
                 fileInfo = await storageManager.getData(`file_${filename}`) || {}
               } catch (e) {
-                console.log(`StorageManager недоступен для ${filename}`)
+                console.log(`StorageManager unavailable for ${filename}`)
               }
             }
           } catch (e) {
-            console.error(`Ошибка загрузки метаданных для ${filename}:`, e)
+            console.error(`Error loading metadata for ${filename}:`, e)
           }
 
           files.push({
@@ -655,7 +655,7 @@ async function register({
             category: category,
             size: stats.size,
             uploadDate: fileInfo.uploadDate || stats.birthtime.toISOString(),
-            uploadedBy: fileInfo.uploadedBy || 'Unbekannt',
+            uploadedBy: fileInfo.uploadedBy || 'Unknown',
             mimetype: fileInfo.mimetype || mime.lookup(filename) || 'application/octet-stream',
             url: `/plugins/static-files/router/file/${category}/${filename}`,
             hasMetadata: !!fileInfo.filename
@@ -678,12 +678,12 @@ async function register({
         }
       })
     } catch (error) {
-      logger.error('Fehler beim Laden der Admin-Dateien:', error)
-      res.status(500).json({ error: 'Fehler beim Laden der Dateien' })
+      logger.error('Error loading the admin files:', error)
+      res.status(500).json({ error: 'Error loading the files.' })
     }
   })
 
-  // Cleanup-Route (используем checkUserAccess вместо checkAdminAccess)
+  // Cleanup-Route (using checkUserAccess instead of checkAdminAccess)
   router.post('/admin/cleanup', checkUserAccess, async (req, res) => {
     try {
       let cleanedFiles = 0
@@ -696,12 +696,12 @@ async function register({
           try {
             let hasMetadata = false
 
-            // Проверяем файловое хранение
+            // We are checking the file storage.
             const fileMetadata = await loadFileMetadata(filename)
             if (fileMetadata && Object.keys(fileMetadata).length > 0) {
               hasMetadata = true
             } else {
-              // Проверяем storageManager
+              // Checking storageManager
               try {
                 const storageMetadata = await storageManager.getData(`file_${filename}`)
                 if (storageMetadata) {
@@ -718,7 +718,7 @@ async function register({
               if (stats.birthtime < thirtyDaysAgo) {
                 fs.unlinkSync(filePath)
                 cleanedFiles++
-                logger.info(`Cleanup: Verwaiste Datei gelöscht: ${filename}`)
+                logger.info(`Cleanup: Orphaned file deleted: ${filename}`)
               }
             }
           } catch (e) { }
@@ -730,14 +730,14 @@ async function register({
 
       res.json({
         success: true,
-        message: `${cleanedFiles} verwaiste Dateien wurden aufgeräumt`,
+        message: `${cleanedFiles} Orphaned files have been cleaned up.`,
         cleanedFiles
       })
 
-      logger.info(`Admin Cleanup: ${cleanedFiles} Dateien aufgeräumt`)
+      logger.info(`Admin Cleanup: ${cleanedFiles} Files cleaned up`)
     } catch (error) {
-      logger.error('Fehler beim Cleanup:', error)
-      res.status(500).json({ error: 'Fehler beim Cleanup' })
+      logger.error('Error during cleanup:', error)
+      res.status(500).json({ error: 'Error during cleanup' })
     }
   })
 
@@ -747,22 +747,22 @@ async function register({
       const { category, filename } = req.params
 
       if (!['images', 'documents'].includes(category)) {
-        return res.status(400).json({ error: 'Ungültige Kategorie' })
+        return res.status(400).json({ error: 'Invalid Category' })
       }
 
       const filePath = path.join(uploadsPath, category, filename)
 
       if (!fs.existsSync(filePath)) {
-        return res.status(404).json({ error: 'Datei nicht gefunden' })
+        return res.status(404).json({ error: 'File not found' })
       }
 
       let fileInfo = {}
       try {
-        // Сначала проверяем файловое хранение
+        // First, we check the file storage.
         fileInfo = await loadFileMetadata(filename)
 
         if (!fileInfo || Object.keys(fileInfo).length === 0) {
-          // Затем проверяем storageManager
+          // Then we check the storageManager.
           try {
             fileInfo = await storageManager.getData(`file_${filename}`) || {}
           } catch (e) { }
@@ -770,12 +770,12 @@ async function register({
       } catch (e) { }
 
       if (req.user.role !== 0 && fileInfo.uploadedBy && fileInfo.uploadedBy !== req.user.username) {
-        return res.status(403).json({ error: 'Keine Berechtigung diese Datei zu löschen' })
+        return res.status(403).json({ error: 'You do not have permission to delete this file.' })
       }
 
       fs.unlinkSync(filePath)
 
-      // Удаляем метаданные из файлового хранения
+      // We are removing metadata from the file storage.
       try {
         const metadataFile = path.join(metadataPath, `${filename}.json`)
         if (fs.existsSync(metadataFile)) {
@@ -783,36 +783,36 @@ async function register({
         }
       } catch (e) { }
 
-      // Удаляем из storageManager
+      // Removing from storageManager
       try {
         await storageManager.storeData(`file_${filename}`, null)
       } catch (e) { }
 
       res.json({
         success: true,
-        message: 'Datei erfolgreich gelöscht'
+        message: 'File successfully deleted'
       })
 
-      logger.info(`Datei gelöscht: ${filename} von ${req.user.username}`)
+      logger.info(`File deleted: ${filename} from ${req.user.username}`)
     } catch (error) {
-      logger.error('Fehler beim Löschen der Datei:', error)
-      res.status(500).json({ error: 'Fehler beim Löschen der Datei' })
+      logger.error('Error deleting the file:', error)
+      res.status(500).json({ error: 'Error deleting the file.' })
     }
   })
 
-  // Route для отдачи файлов
+  // Route for serving files
   router.get('/file/:category/:filename', (req, res) => {
     try {
       const { category, filename } = req.params
 
       if (!['images', 'documents'].includes(category)) {
-        return res.status(400).json({ error: 'Ungültige Kategorie' })
+        return res.status(400).json({ error: 'Invalid Category' })
       }
 
       const filePath = path.join(uploadsPath, category, filename)
 
       if (!fs.existsSync(filePath)) {
-        return res.status(404).json({ error: 'Datei nicht gefunden' })
+        return res.status(404).json({ error: 'File not found' })
       }
 
       const stats = fs.statSync(filePath)
@@ -832,22 +832,22 @@ async function register({
       fileStream.pipe(res)
 
       fileStream.on('error', (error) => {
-        logger.error('Fehler beim Streamen der Datei:', error)
+        logger.error('Error streaming the file:', error)
         if (!res.headersSent) {
-          res.status(500).json({ error: 'Fehler beim Bereitstellen der Datei' })
+          res.status(500).json({ error: 'Error deploying the file.' })
         }
       })
     } catch (error) {
-      logger.error('Fehler beim Bereitstellen der Datei:', error)
-      res.status(500).json({ error: 'Fehler beim Bereitstellen der Datei' })
+      logger.error('Error while deploying the file:', error)
+      res.status(500).json({ error: 'Error deploying the file.' })
     }
   })
 
-  logger.info('✅ Static Files Plugin erfolgreich registriert')
+  logger.info('✅ Static Files Plugin successfully registered')
 }
 
 async function unregister() {
-  console.log('Static Files Plugin wird deregistriert')
+  console.log('The Static Files plugin is being deregistered.')
 }
 
 module.exports = {

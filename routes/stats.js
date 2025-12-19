@@ -13,7 +13,7 @@ class StatsRoutes {
       if (!user || (user.role !== 0 && user.role !== 1)) {
         return res.status(403).json({
           status: "failure",
-          message: "Sie haben keine Berechtigung für Statistiken"
+          message: "You do not have permission to view statistics."
         });
       }
 
@@ -22,7 +22,7 @@ class StatsRoutes {
     } catch (error) {
       res.status(401).json({
         status: "failure",
-        message: "Authentifizierung erforderlich"
+        message: "Authentication required"
       });
     }
   }
