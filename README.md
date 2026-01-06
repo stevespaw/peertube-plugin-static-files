@@ -48,6 +48,8 @@ cd /var/www/peertube
 sudo -u peertube npm install peertube-plugin-static-files
 sudo systemctl restart peertube
 ```
+or copy Zip to /app/data/storage/cappital and extract.
+peertube-cli plugins install --path /app/data/storage/cappital/peertube-plugin-static-files --url https://video.example.com --username ADMIN --password AdminPassword
 
 ### Development Installation
 ```bash
