@@ -1494,7 +1494,7 @@ class StatsPage {
               <thead>
                 <tr>
                   <th>Video</th>
-                  <th style="text-align: right;">Aufrufe</th>
+                  <th style="text-align: right;">Views</th>
                 </tr>
               </thead>
               <tbody>
