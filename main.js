@@ -115,7 +115,7 @@ async function register({
     label: 'Path to the upload page (without /)',
     type: 'input',
     default: 'files/upload',
-    descriptionHTML: 'The page will be available at https://your-domain.com/p/{path},
+    descriptionHTML: 'The page will be available at https://your-domain.com/p/{path} be available',
     private: false
   })
 

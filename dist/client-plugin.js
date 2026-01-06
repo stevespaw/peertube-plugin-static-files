@@ -657,10 +657,10 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
     let html = `
       <div class="mb-3">
         <p class="text-muted">
-          <strong>Gesamt:</strong> ${files.length} Dateien • 
-          <strong>Größe:</strong> ${formatFileSize(stats.totalSize || 0)} • 
-          <strong>Mit Metadaten:</strong> ${stats.withMetadata || 0} • 
-          <strong>Ohne Metadaten:</strong> ${stats.withoutMetadata || 0}
+          <strong>In Total:</strong> ${files.length} Dateien • 
+          <strong>Size:</strong> ${formatFileSize(stats.totalSize || 0)} • 
+          <strong>With metadata:</strong> ${stats.withMetadata || 0} • 
+          <strong>Without metadata:</strong> ${stats.withoutMetadata || 0}
         </p>
       </div>
     `
@@ -698,7 +698,7 @@ async function register({ registerClientRoute, registerHook, peertubeHelpers }) 
                 👁️ View
               </button>
               <button class="btn btn-outline-secondary btn-sm" 
-                      onclick="copyAdminFileLink('${file.url}')" title="Link kopieren">
+                      onclick="copyAdminFileLink('${file.url}')" title="Copy Link">
                 📋 Copy link
               </button>
               <button class="btn btn-outline-info btn-sm" 
@@ -1411,20 +1411,20 @@ class StatsPage {
         <div class="metric-subtitle">In the last 30 days</div>
       </div>
 
-      <!-- Row 3: DAU/WAU/MAU -->
+      <!-- Row 3: DAY/WEEK/MONTH -->
       <div class="metric-card blue" style="grid-column: span 2;">
         <div class="metric-label">📈 Active viewers</div>
         <div style="display: flex; gap: 2rem; align-items: flex-end; margin-top: 0.75rem;">
           <div>
-            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">DAU</div>
+            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">DAY</div>
             <div class="metric-value" style="font-size: 2rem;">${data.dau || 0}</div>
           </div>
           <div>
-            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">WAU</div>
+            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">WEEK</div>
             <div class="metric-value" style="font-size: 2rem;">${data.wau || 0}</div>
           </div>
           <div>
-            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">MAU</div>
+            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">MONTH</div>
             <div class="metric-value" style="font-size: 2rem;">${data.mau || 0}</div>
           </div>
         </div>
@@ -1579,7 +1579,7 @@ class StatsPage {
 
     return `
       <div class="data-card" style="grid-column: span 2;">
-        <div class="data-card-header">🗺️ Top Regionen</div>
+        <div class="data-card-header">🗺️ Top Regions</div>
         <div class="data-card-content">${items}</div>
       </div>
     `;

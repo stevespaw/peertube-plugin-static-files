@@ -228,20 +228,20 @@ class StatsPage {
         <div class="metric-subtitle">In the last 30 days</div>
       </div>
 
-      <!-- Row 3: DAU/WAU/MAU -->
+      <!-- Row 3: DAY/WEEK/MONTH -->
       <div class="metric-card blue" style="grid-column: span 2;">
         <div class="metric-label">📈 Active viewers</div>
         <div style="display: flex; gap: 2rem; align-items: flex-end; margin-top: 0.75rem;">
           <div>
-            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">DAU</div>
+            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">DAY</div>
             <div class="metric-value" style="font-size: 2rem;">${data.dau || 0}</div>
           </div>
           <div>
-            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">WAU</div>
+            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">WEEK</div>
             <div class="metric-value" style="font-size: 2rem;">${data.wau || 0}</div>
           </div>
           <div>
-            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">MAU</div>
+            <div style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 0.25rem;">MONTH</div>
             <div class="metric-value" style="font-size: 2rem;">${data.mau || 0}</div>
           </div>
         </div>
