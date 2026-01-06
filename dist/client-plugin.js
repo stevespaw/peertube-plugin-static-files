@@ -1869,7 +1869,7 @@ class StatsPage {
       <table class="stats-table">
         <thead>
           <tr>
-            <th>Kanal</th>
+            <th>Channel</th>
             <th style="text-align: center;">Videos</th>
             <th style="text-align: right;">Views</th>
             <th style="text-align: right;">Watch Time (Std.)</th>
