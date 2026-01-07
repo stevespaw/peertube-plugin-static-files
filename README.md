@@ -450,7 +450,7 @@ Full license details can be found in the [LICENSE](LICENSE) file.
 
 ### 📞 Support Channels
 - **GitHub Issues**: [Bug Reports & Feature Requests](https://github.com/yarkolife/peertube-plugin-static-files/issues)
-- **GitHub Discussions**: [Community Forum](https://github.com/yarkolife/peertube-plugin-static-files/discussions)
+- **GitHub Discussions**: [Community Forum](https://github.com/stevespaw/peertube-plugin-static-files/discussions)
 - **PeerTube Forum**: [Plugin specific discussions](https://framatalk.org/c/peertube)
 
 ### 🌟 Contributors
